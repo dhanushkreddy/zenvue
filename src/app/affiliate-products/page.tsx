@@ -2,16 +2,24 @@
 
 import { MainLayout } from '@/components/layout/MainLayout';
 import { useAdStore } from '@/store/ad-store';
-import { ProductCard } from '@/components/products/ProductCard';
+import { ProductListItem } from '@/components/products/ProductListItem';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default function AffiliateProductsPage() {
-  const { affiliateProducts, isInitialized } = useAdStore();
+  const { affiliateProducts, isInitialized, addToCart, isInCart } = useAdStore();
 
   const renderSkeletons = () => (
-    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+    <div className="space-y-4">
       {[...Array(4)].map((_, i) => (
-        <Skeleton key={i} className="h-[380px] w-full" />
+        <div key={i} className="flex items-center space-x-4 p-4 rounded-xl border">
+            <Skeleton className="h-16 w-16 rounded-lg" />
+            <div className="space-y-2 flex-1">
+                <Skeleton className="h-5 w-3/4" />
+                <Skeleton className="h-4 w-1/4" />
+            </div>
+            <Skeleton className="h-10 w-28" />
+        </div>
       ))}
     </div>
   );
@@ -26,24 +34,36 @@ export default function AffiliateProductsPage() {
           </div>
         </div>
         
-        {!isInitialized ? renderSkeletons() : (
-          <>
-            {affiliateProducts.length > 0 ? (
-              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                {affiliateProducts.map(product => (
-                  <ProductCard key={product.id} product={product} />
-                ))}
-              </div>
-            ) : (
-              <div className="flex flex-col items-center justify-center text-center py-20 rounded-xl bg-muted/50">
-                <h3 className="text-2xl font-bold tracking-tight">No Affiliate Products Yet</h3>
-                <p className="text-muted-foreground mt-2">
-                  Convert an ad from your history to see it here.
-                </p>
-              </div>
-            )}
-          </>
-        )}
+        <Card>
+            <CardHeader>
+                <CardTitle>Your Products</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+                {!isInitialized ? renderSkeletons() : (
+                <>
+                    {affiliateProducts.length > 0 ? (
+                    <div className="space-y-4">
+                        {affiliateProducts.map(product => (
+                            <ProductListItem 
+                                key={product.id} 
+                                product={product} 
+                                onAddToCart={() => addToCart(product)}
+                                isInCart={isInCart(product.id)}
+                            />
+                        ))}
+                    </div>
+                    ) : (
+                    <div className="flex flex-col items-center justify-center text-center py-20 rounded-xl bg-muted/50">
+                        <h3 className="text-2xl font-bold tracking-tight">No Affiliate Products Yet</h3>
+                        <p className="text-muted-foreground mt-2">
+                        Convert an ad from your history to see it here.
+                        </p>
+                    </div>
+                    )}
+                </>
+                )}
+            </CardContent>
+        </Card>
       </div>
     </MainLayout>
   );
