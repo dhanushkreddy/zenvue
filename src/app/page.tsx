@@ -1,28 +1,30 @@
 'use client';
 
 import { MainLayout } from '@/components/layout/MainLayout';
-import { useAdStore } from '@/store/ad-store';
-import { AdCard } from '@/components/ads/AdCard';
-import { Skeleton } from '@/components/ui/skeleton';
+import { DashboardStats } from '@/components/dashboard/DashboardStats';
+import { EarningsChart } from '@/components/dashboard/EarningsChart';
+import { RecentlyConverted } from '@/components/dashboard/RecentlyConverted';
 
-export default function HomePage() {
-  const { ads, isInitialized } = useAdStore();
-
-  const renderSkeletons = () => (
-    <div className="space-y-8">
-      {[...Array(3)].map((_, i) => (
-        <Skeleton key={i} className="h-[550px] w-full" />
-      ))}
-    </div>
-  );
-
+export default function DashboardPage() {
   return (
     <MainLayout>
-      <div className="flex justify-center p-4 md:p-8">
-        <div className="w-full max-w-2xl space-y-8">
-          {!isInitialized ? renderSkeletons() : (
-            ads.map(ad => <AdCard key={ad.id} ad={ad} layout="feed" />)
-          )}
+      <div className="flex-1 space-y-8 p-4 md:p-8 pt-6">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between space-y-2">
+          <div>
+            <h1 className="text-4xl font-bold tracking-tight">Dashboard</h1>
+            <p className="text-muted-foreground mt-2">
+              An overview of your ad interactions and affiliate progress.
+            </p>
+          </div>
+        </div>
+        <DashboardStats />
+        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-7">
+          <div className="lg:col-span-4">
+            <EarningsChart />
+          </div>
+          <div className="lg:col-span-3">
+            <RecentlyConverted />
+          </div>
         </div>
       </div>
     </MainLayout>

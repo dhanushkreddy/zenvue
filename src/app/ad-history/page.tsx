@@ -6,9 +6,12 @@ import { useAdStore } from '@/store/ad-store';
 import { AdCard } from '@/components/ads/AdCard';
 import { FilterControls } from '@/components/ads/FilterControls';
 import { Skeleton } from '@/components/ui/skeleton';
+import { toast } from '@/hooks/use-toast';
+import type { Ad } from '@/lib/types';
+
 
 export default function AdHistoryPage() {
-  const { ads, isInitialized } = useAdStore();
+  const { ads, convertToAffiliate, isAffiliateProduct, isInitialized } = useAdStore();
   const [searchTerm, setSearchTerm] = useState('');
   const [category, setCategory] = useState('all');
 
@@ -20,6 +23,13 @@ export default function AdHistoryPage() {
     .filter(ad => category === 'all' || ad.category === category);
   
   const categories = ['all', ...Array.from(new Set(ads.map(ad => ad.category)))];
+
+  const handleConvert = (ad: Ad) => {
+    convertToAffiliate(ad);
+    toast({
+      description: `Successfully converted "${ad.title}" to an affiliate product.`,
+    });
+  };
 
   const renderSkeletons = () => (
     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
@@ -52,7 +62,12 @@ export default function AdHistoryPage() {
             {filteredAds.length > 0 ? (
               <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {filteredAds.map(ad => (
-                  <AdCard key={ad.id} ad={ad} />
+                  <AdCard 
+                    key={ad.id} 
+                    ad={ad}
+                    onConvert={() => handleConvert(ad)}
+                    isConverted={isAffiliateProduct(ad.id)}
+                  />
                 ))}
               </div>
             ) : (

@@ -2,23 +2,33 @@
 
 import React, { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
 import { onAuthStateChanged, signInAnonymously, User } from 'firebase/auth';
-import { doc, getDoc, setDoc, onSnapshot, collection, writeBatch, deleteDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc, onSnapshot, collection, writeBatch, deleteDoc, updateDoc, arrayUnion, arrayRemove } from 'firebase/firestore';
 import { auth, db } from '@/lib/firebase';
-import type { Ad, AdRating } from '@/lib/types';
+import type { Ad, AdRating, Product } from '@/lib/types';
 import { initialProducts } from '@/lib/data';
 import { toast } from '@/hooks/use-toast';
+
+interface CartItem {
+  product: Product;
+  quantity: number;
+}
 
 interface AdStoreState {
   user: User | null;
   ads: Ad[];
-  saved: Ad[];
+  affiliateProducts: Product[];
+  cart: CartItem[];
   ratings: AdRating;
   showOnboarding: boolean;
   isInitialized: boolean;
   rateAd: (adId: string, rating: 'like' | 'dislike') => void;
-  saveAd: (ad: Ad) => void;
   getRating: (adId: string) => 'like' | 'dislike' | undefined;
-  isSaved: (adId: string) => boolean;
+  convertToAffiliate: (ad: Ad) => void;
+  isAffiliateProduct: (adId: string) => boolean;
+  addToCart: (product: Product) => void;
+  updateCartQuantity: (productId: string, quantity: number) => void;
+  removeFromCart: (productId: string) => void;
+  isInCart: (productId: string) => boolean;
   closeOnboarding: () => void;
 }
 
@@ -28,7 +38,8 @@ export function AdStoreProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isInitialized, setIsInitialized] = useState(false);
   const [ads, setAds] = useState<Ad[]>([]);
-  const [saved, setSaved] = useState<Ad[]>([]);
+  const [affiliateProducts, setAffiliateProducts] = useState<Product[]>([]);
+  const [cart, setCart] = useState<CartItem[]>([]);
   const [ratings, setRatings] = useState<AdRating>({});
   const [showOnboarding, setShowOnboarding] = useState(false);
 
@@ -44,18 +55,27 @@ export function AdStoreProvider({ children }: { children: ReactNode }) {
           setShowOnboarding(true);
           const batch = writeBatch(db);
           
+          const initialAdsData = initialProducts.slice(0, 8);
+          
           const adsCollectionRef = collection(db, 'users', user.uid, 'ads');
-          const initialAdsData = initialProducts.slice(0, 6);
           initialAdsData.forEach(ad => {
             const { price, commissionRate, ...adData } = ad;
             batch.set(doc(adsCollectionRef, ad.id), adData);
           });
           
-          batch.set(userDocRef, { onboardingSeen: true, ratings: {} });
+          batch.set(userDocRef, { 
+            onboardingSeen: true, 
+            ratings: {},
+            cart: [],
+          });
+          
           await batch.commit();
 
-          setAds(initialAdsData.map(({price, commissionRate, ...adData}) => adData));
+          const adsData = initialAdsData.map(({price, commissionRate, ...adData}) => adData);
+          setAds(adsData);
           setRatings({});
+          setAffiliateProducts([]);
+          setCart([]);
 
         } else {
            const data = userDocSnap.data();
@@ -67,19 +87,21 @@ export function AdStoreProvider({ children }: { children: ReactNode }) {
             setAds(snapshot.docs.map(doc => doc.data() as Ad));
           }
         });
-        const unsubSaved = onSnapshot(collection(db, 'users', user.uid, 'savedAds'), (snapshot) => {
-          setSaved(snapshot.docs.map(doc => doc.data() as Ad));
+        const unsubAffiliate = onSnapshot(collection(db, 'users', user.uid, 'affiliateProducts'), (snapshot) => {
+          setAffiliateProducts(snapshot.docs.map(doc => doc.data() as Product));
         });
-        const unsubRatings = onSnapshot(doc(db, 'users', user.uid), (snapshot) => {
-           setRatings(snapshot.data()?.ratings || {});
+        const unsubUserData = onSnapshot(doc(db, 'users', user.uid), (snapshot) => {
+           const data = snapshot.data();
+           setRatings(data?.ratings || {});
+           setCart(data?.cart || []);
         });
-
+        
         setIsInitialized(true);
 
         return () => {
           unsubAds();
-          unsubSaved();
-          unsubRatings();
+          unsubAffiliate();
+          unsubUserData();
         };
 
       } else {
@@ -113,25 +135,54 @@ export function AdStoreProvider({ children }: { children: ReactNode }) {
 
   const getRating = useCallback((adId: string) => ratings[adId], [ratings]);
   
-  const isSaved = useCallback((adId: string) => saved.some(p => p.id === adId), [saved]);
+  const isAffiliateProduct = useCallback((adId: string) => affiliateProducts.some(p => p.id === adId), [affiliateProducts]);
 
-  const saveAd = useCallback(async (ad: Ad) => {
+  const convertToAffiliate = useCallback(async (ad: Ad) => {
     if (!user) return;
-    const savedAdRef = doc(db, 'users', user.uid, 'savedAds', ad.id);
-
-    if (isSaved(ad.id)) {
-      await deleteDoc(savedAdRef);
-      toast({
-        description: `Removed "${ad.title}" from your saved ads.`,
-      });
-    } else {
-      await setDoc(savedAdRef, ad);
-      toast({
-        description: `Saved "${ad.title}".`,
-      });
+    
+    const productData = initialProducts.find(p => p.id === ad.id);
+    if (!productData) {
+        toast({ variant: 'destructive', description: "Could not find product details for this ad."});
+        return;
     }
-  }, [user, isSaved, saved]);
+
+    const affiliateProductRef = doc(db, 'users', user.uid, 'affiliateProducts', ad.id);
+    await setDoc(affiliateProductRef, productData);
+  }, [user]);
   
+  const addToCart = useCallback(async (product: Product) => {
+    if (!user) return;
+    const userDocRef = doc(db, 'users', user.uid);
+    const newCartItem: CartItem = { product, quantity: 1 };
+    await updateDoc(userDocRef, {
+      cart: arrayUnion(newCartItem)
+    });
+    toast({ description: `Added "${product.title}" to your cart.` });
+  }, [user]);
+
+  const updateCartQuantity = useCallback(async (productId: string, quantity: number) => {
+    if (!user || quantity < 1) return;
+    const updatedCart = cart.map(item => 
+      item.product.id === productId ? { ...item, quantity } : item
+    );
+    const userDocRef = doc(db, 'users', user.uid);
+    await updateDoc(userDocRef, { cart: updatedCart });
+  }, [user, cart]);
+
+  const removeFromCart = useCallback(async (productId: string) => {
+    if (!user) return;
+    const itemToRemove = cart.find(item => item.product.id === productId);
+    if (itemToRemove) {
+      const userDocRef = doc(db, 'users', user.uid);
+      await updateDoc(userDocRef, {
+        cart: arrayRemove(itemToRemove)
+      });
+      toast({ description: `Removed "${itemToRemove.product.title}" from your cart.` });
+    }
+  }, [user, cart]);
+
+  const isInCart = useCallback((productId: string) => cart.some(item => item.product.id === productId), [cart]);
+
   const closeOnboarding = useCallback(async () => {
     setShowOnboarding(false);
     if(user) {
@@ -143,14 +194,19 @@ export function AdStoreProvider({ children }: { children: ReactNode }) {
   const value = {
     user,
     ads,
-    saved,
+    affiliateProducts,
+    cart,
     ratings,
     showOnboarding,
     isInitialized,
     rateAd,
-    saveAd,
     getRating,
-    isSaved,
+    convertToAffiliate,
+    isAffiliateProduct,
+    addToCart,
+    updateCartQuantity,
+    removeFromCart,
+    isInCart,
     closeOnboarding,
   };
 

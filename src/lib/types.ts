@@ -18,3 +18,8 @@ export interface Product extends Ad {
 export type AdRating = {
   [adId: string]: 'like' | 'dislike';
 };
+
+export interface CartItem {
+    product: Product;
+    quantity: number;
+}

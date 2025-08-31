@@ -15,9 +15,10 @@ import {
   SidebarMenuBadge,
 } from '@/components/ui/sidebar';
 import {
-  Home,
+  LayoutDashboard,
   History,
-  Bookmark,
+  Handshake,
+  ShoppingCart,
   User,
   Search,
 } from 'lucide-react';
@@ -37,17 +38,19 @@ import {
 import { Input } from '../ui/input';
 
 const navItems = [
-  { href: '/', label: 'Home', icon: Home },
-  { href: '/ad-history', label: 'History', icon: History },
-  { href: '/saved', label: 'Saved', icon: Bookmark },
+  { href: '/', label: 'Dashboard', icon: LayoutDashboard },
+  { href: '/ad-history', label: 'Ad History', icon: History },
+  { href: '/affiliate-products', label: 'Affiliate Products', icon: Handshake },
+  { href: '/cart', label: 'Personal Cart', icon: ShoppingCart },
 ];
 
 export function MainLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const { saved, user } = useAdStore();
+  const { cart, user } = useAdStore();
 
   const getBadgeCount = (href: string) => {
-    if (href === '/saved') return saved.length;
+    if (href === '/affiliate-products') return 0; // Update if needed
+    if (href === '/cart') return cart.length;
     return 0;
   };
 
