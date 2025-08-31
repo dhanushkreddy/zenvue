@@ -1,9 +1,9 @@
 import { MainLayout } from '@/components/layout/MainLayout';
 import { DashboardStats } from '@/components/dashboard/DashboardStats';
 import { EarningsChart } from '@/components/dashboard/EarningsChart';
-import { PersonalizedAds } from '@/components/dashboard/PersonalizedAds';
 import { Suspense } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 
 export default function DashboardPage() {
   return (
@@ -20,9 +20,15 @@ export default function DashboardPage() {
             </Suspense>
           </div>
           <div className="col-span-4 lg:col-span-3">
-             <Suspense fallback={<Skeleton className="h-[350px] w-full" />}>
-              <PersonalizedAds />
-            </Suspense>
+             <Card className="h-full flex flex-col">
+              <CardHeader>
+                <CardTitle>For You</CardTitle>
+                <CardDescription>Personalized ad recommendations (coming soon).</CardDescription>
+              </CardHeader>
+              <CardContent className="flex-grow flex flex-col justify-center items-center">
+                  <p className="text-muted-foreground">This feature is currently unavailable.</p>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </div>
