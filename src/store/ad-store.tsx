@@ -52,12 +52,17 @@ export function AdStoreProvider({ children }: { children: ReactNode }) {
           const batch = writeBatch(db);
           
           const adsCollectionRef = collection(db, 'users', user.uid, 'ads');
-          initialProducts.slice(0, 6).forEach(ad => {
+          const initialAdsData = initialProducts.slice(0, 6);
+          initialAdsData.forEach(ad => {
             batch.set(doc(adsCollectionRef, ad.id), ad);
           });
           
           batch.set(userDocRef, { onboardingSeen: true, ratings: {} });
           await batch.commit();
+
+          // Also update the local state immediately
+          setAds(initialAdsData);
+          setRatings({});
 
         } else {
            const data = userDocSnap.data();
@@ -66,7 +71,9 @@ export function AdStoreProvider({ children }: { children: ReactNode }) {
 
         // Set up real-time listeners
         const unsubAds = onSnapshot(collection(db, 'users', user.uid, 'ads'), (snapshot) => {
-          setAds(snapshot.docs.map(doc => doc.data() as Ad));
+          if (!snapshot.empty) {
+            setAds(snapshot.docs.map(doc => doc.data() as Ad));
+          }
         });
         const unsubAffiliate = onSnapshot(collection(db, 'users', user.uid, 'affiliateProducts'), (snapshot) => {
           setAffiliateProducts(snapshot.docs.map(doc => doc.data() as Product));
