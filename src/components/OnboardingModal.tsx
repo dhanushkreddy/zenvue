@@ -18,23 +18,23 @@ import {
 import { Button } from './ui/button';
 import { useAdStore } from '@/store/ad-store';
 import { Card, CardContent } from './ui/card';
-import { History, Handshake, BarChart2 } from 'lucide-react';
+import { History, Bookmark, Heart } from 'lucide-react';
 
 const onboardingSteps = [
   {
+    icon: Heart,
+    title: 'React to Ads in Your Feed',
+    description: "Like ads to personalize your feed. Your home feed is where you'll discover new products and brands.",
+  },
+  {
+    icon: Bookmark,
+    title: 'Save Your Favorites',
+    description: "See something you love? Bookmark it to save it to your personal collection for later.",
+  },
+  {
     icon: History,
-    title: 'Track Your Ad History',
-    description: "View all the ads you've seen in one place. Like or dislike them to personalize your future recommendations.",
-  },
-  {
-    icon: Handshake,
-    title: 'Convert Ads to Affiliate Products',
-    description: "Turn any ad into an affiliate product with a single click. Add them to your affiliate list and personal cart.",
-  },
-  {
-    icon: BarChart2,
-    title: 'Manage & Earn',
-    description: "Your personal cart shows potential earnings. Manage your items and see how your choices can turn into rewards.",
+    title: 'Browse Your History',
+    description: "Easily find any ad you've seen before in your ad history.",
   },
 ];
 
@@ -45,9 +45,9 @@ export function OnboardingModal() {
     <Dialog open={showOnboarding} onOpenChange={(open) => !open && closeOnboarding()}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Welcome to AdControl Hub!</DialogTitle>
+          <DialogTitle>Welcome to AdGram!</DialogTitle>
           <DialogDescription>
-            Take control of your ads. Here’s a quick guide.
+            Your new space to discover and save ads you love.
           </DialogDescription>
         </DialogHeader>
         <Carousel className="w-full max-w-xs mx-auto">

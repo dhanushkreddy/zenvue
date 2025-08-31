@@ -1,23 +1,25 @@
 'use client';
 
 import Image from 'next/image';
-import { ThumbsUp, ThumbsDown, Handshake, CheckCircle2 } from 'lucide-react';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { ThumbsUp, ThumbsDown, Bookmark, Heart, MessageCircle } from 'lucide-react';
+import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useAdStore } from '@/store/ad-store';
 import { Badge } from '../ui/badge';
 import type { Ad } from '@/lib/types';
 import { cn } from '@/lib/utils';
+import { Avatar, AvatarFallback } from '../ui/avatar';
+import { User } from 'lucide-react';
 
 interface AdCardProps {
   ad: Ad;
-  layout?: 'default' | 'compact';
+  layout?: 'default' | 'compact' | 'feed';
 }
 
 export function AdCard({ ad, layout = 'default' }: AdCardProps) {
-  const { rateAd, getRating, convertToAffiliate, isAffiliate } = useAdStore();
+  const { rateAd, getRating, saveAd, isSaved } = useAdStore();
   const rating = getRating(ad.id);
-  const alreadyAffiliate = isAffiliate(ad.id);
+  const alreadySaved = isSaved(ad.id);
 
   if (layout === 'compact') {
     return (
@@ -34,11 +36,56 @@ export function AdCard({ ad, layout = 'default' }: AdCardProps) {
                 <p className="font-semibold text-sm line-clamp-1">{ad.title}</p>
                 <p className="text-xs text-muted-foreground">{ad.brand}</p>
             </div>
-             <Button size="sm" variant="ghost" onClick={() => convertToAffiliate(ad.id)} disabled={alreadyAffiliate}>
-                {alreadyAffiliate ? <CheckCircle2 className="text-green-500" /> : <Handshake className="h-4 w-4" />}
+             <Button size="sm" variant="ghost" onClick={() => saveAd(ad)} disabled={alreadySaved}>
+                <Bookmark className={cn("h-4 w-4", alreadySaved && "fill-primary text-primary")} />
             </Button>
         </div>
     );
+  }
+
+  if (layout === 'feed') {
+    return (
+      <Card className="w-full max-w-2xl mx-auto overflow-hidden rounded-xl">
+        <CardHeader className="flex flex-row items-center gap-3 p-4">
+           <Avatar>
+              <AvatarFallback>
+                <User />
+              </AvatarFallback>
+            </Avatar>
+            <div>
+              <p className="font-semibold text-sm">{ad.brand}</p>
+              <p className="text-xs text-muted-foreground">Sponsored</p>
+            </div>
+        </CardHeader>
+        <CardContent className="p-0">
+           <Image
+              src={ad.thumbnail}
+              alt={ad.title}
+              width={600}
+              height={600}
+              data-ai-hint={ad.dataAiHint}
+              className="object-cover w-full aspect-square"
+            />
+        </CardContent>
+        <CardFooter className="p-4 flex flex-col items-start gap-3">
+          <div className="flex items-center gap-4">
+            <Button variant="ghost" size="icon" onClick={() => rateAd(ad.id, 'like')}>
+              <Heart className={cn("h-6 w-6", rating === 'like' && "fill-red-500 text-red-500")} />
+            </Button>
+             <Button variant="ghost" size="icon">
+              <MessageCircle className="h-6 w-6" />
+            </Button>
+            <Button variant="ghost" size="icon" className="ml-auto" onClick={() => saveAd(ad)} >
+              <Bookmark className={cn("h-6 w-6", alreadySaved && "fill-foreground")} />
+            </Button>
+          </div>
+          <div className="px-1">
+            <p className="font-semibold text-sm">{ad.title}</p>
+            <p className="text-sm text-muted-foreground line-clamp-2">{ad.description}</p>
+          </div>
+        </CardFooter>
+      </Card>
+    )
   }
 
   return (
@@ -80,9 +127,9 @@ export function AdCard({ ad, layout = 'default' }: AdCardProps) {
             Dislike
           </Button>
         </div>
-        <Button onClick={() => convertToAffiliate(ad.id)} disabled={alreadyAffiliate} className="w-full">
-            {alreadyAffiliate ? <CheckCircle2 className="mr-2 h-4 w-4" /> : <Handshake className="mr-2 h-4 w-4" />}
-            {alreadyAffiliate ? 'Added to Affiliates' : 'Convert to Affiliate'}
+        <Button onClick={() => saveAd(ad)} disabled={alreadySaved} className="w-full">
+            <Bookmark className="mr-2 h-4 w-4" />
+            {alreadySaved ? 'Saved' : 'Save Ad'}
         </Button>
       </CardFooter>
     </Card>

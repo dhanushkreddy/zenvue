@@ -3,8 +3,8 @@ import './globals.css';
 import { AppProvider } from '@/components/layout/AppProvider';
 
 export const metadata: Metadata = {
-  title: 'AdControl Hub',
-  description: 'Take control of your online shopping ads.',
+  title: 'AdGram',
+  description: 'Your social feed for ads.',
 };
 
 export default function RootLayout({

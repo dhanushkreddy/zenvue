@@ -15,11 +15,6 @@ export interface Product extends Ad {
   commissionRate: number;
 }
 
-export interface CartItem {
-  product: Product;
-  quantity: number;
-}
-
 export type AdRating = {
   [adId: string]: 'like' | 'dislike';
 };

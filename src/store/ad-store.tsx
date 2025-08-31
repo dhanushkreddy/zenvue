@@ -4,26 +4,21 @@ import React, { createContext, useContext, useState, useEffect, ReactNode, useCa
 import { onAuthStateChanged, signInAnonymously, User } from 'firebase/auth';
 import { doc, getDoc, setDoc, onSnapshot, collection, writeBatch, deleteDoc } from 'firebase/firestore';
 import { auth, db } from '@/lib/firebase';
-import type { Ad, Product, CartItem, AdRating } from '@/lib/types';
+import type { Ad, AdRating } from '@/lib/types';
 import { initialProducts } from '@/lib/data';
 import { toast } from '@/hooks/use-toast';
 
 interface AdStoreState {
   user: User | null;
   ads: Ad[];
-  affiliateProducts: Product[];
-  cart: CartItem[];
+  saved: Ad[];
   ratings: AdRating;
   showOnboarding: boolean;
   isInitialized: boolean;
   rateAd: (adId: string, rating: 'like' | 'dislike') => void;
-  convertToAffiliate: (adId:string) => void;
-  addToCart: (product: Product) => void;
-  updateCartQuantity: (productId: string, quantity: number) => void;
-  removeFromCart: (productId: string) => void;
+  saveAd: (ad: Ad) => void;
   getRating: (adId: string) => 'like' | 'dislike' | undefined;
-  isAffiliate: (adId: string) => boolean;
-  isInCart: (productId: string) => boolean;
+  isSaved: (adId: string) => boolean;
   closeOnboarding: () => void;
 }
 
@@ -33,8 +28,7 @@ export function AdStoreProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isInitialized, setIsInitialized] = useState(false);
   const [ads, setAds] = useState<Ad[]>([]);
-  const [affiliateProducts, setAffiliateProducts] = useState<Product[]>([]);
-  const [cart, setCart] = useState<CartItem[]>([]);
+  const [saved, setSaved] = useState<Ad[]>([]);
   const [ratings, setRatings] = useState<AdRating>({});
   const [showOnboarding, setShowOnboarding] = useState(false);
 
@@ -43,26 +37,24 @@ export function AdStoreProvider({ children }: { children: ReactNode }) {
       if (user) {
         setUser(user);
         
-        // Fetch initial data and set up listeners
         const userDocRef = doc(db, 'users', user.uid);
         const userDocSnap = await getDoc(userDocRef);
 
         if (!userDocSnap.exists()) {
-          // First time user, seed initial data
           setShowOnboarding(true);
           const batch = writeBatch(db);
           
           const adsCollectionRef = collection(db, 'users', user.uid, 'ads');
           const initialAdsData = initialProducts.slice(0, 6);
           initialAdsData.forEach(ad => {
-            batch.set(doc(adsCollectionRef, ad.id), ad);
+            const { price, commissionRate, ...adData } = ad;
+            batch.set(doc(adsCollectionRef, ad.id), adData);
           });
           
           batch.set(userDocRef, { onboardingSeen: true, ratings: {} });
           await batch.commit();
 
-          // Also update the local state immediately
-          setAds(initialAdsData);
+          setAds(initialAdsData.map(({price, commissionRate, ...adData}) => adData));
           setRatings({});
 
         } else {
@@ -70,17 +62,13 @@ export function AdStoreProvider({ children }: { children: ReactNode }) {
            setShowOnboarding(!data.onboardingSeen);
         }
 
-        // Set up real-time listeners
         const unsubAds = onSnapshot(collection(db, 'users', user.uid, 'ads'), (snapshot) => {
           if (!snapshot.empty) {
             setAds(snapshot.docs.map(doc => doc.data() as Ad));
           }
         });
-        const unsubAffiliate = onSnapshot(collection(db, 'users', user.uid, 'affiliateProducts'), (snapshot) => {
-          setAffiliateProducts(snapshot.docs.map(doc => doc.data() as Product));
-        });
-        const unsubCart = onSnapshot(collection(db, 'users', user.uid, 'cart'), (snapshot) => {
-          setCart(snapshot.docs.map(doc => doc.data() as CartItem));
+        const unsubSaved = onSnapshot(collection(db, 'users', user.uid, 'savedAds'), (snapshot) => {
+          setSaved(snapshot.docs.map(doc => doc.data() as Ad));
         });
         const unsubRatings = onSnapshot(doc(db, 'users', user.uid), (snapshot) => {
            setRatings(snapshot.data()?.ratings || {});
@@ -90,13 +78,11 @@ export function AdStoreProvider({ children }: { children: ReactNode }) {
 
         return () => {
           unsubAds();
-          unsubAffiliate();
-          unsubCart();
+          unsubSaved();
           unsubRatings();
         };
 
       } else {
-        // User is signed out
         signInAnonymously(auth).catch((error) => {
           console.error("Anonymous sign-in failed:", error);
           toast({
@@ -126,51 +112,25 @@ export function AdStoreProvider({ children }: { children: ReactNode }) {
   }, [user, ratings]);
 
   const getRating = useCallback((adId: string) => ratings[adId], [ratings]);
-
-  const isAffiliate = useCallback((adId: string) => affiliateProducts.some(p => p.id === adId), [affiliateProducts]);
   
-  const isInCart = useCallback((productId: string) => cart.some(item => item.product.id === productId), [cart]);
+  const isSaved = useCallback((adId: string) => saved.some(p => p.id === adId), [saved]);
 
-  const convertToAffiliate = useCallback(async (adId: string) => {
-    if (!user || isAffiliate(adId)) return;
-    const productToAdd = initialProducts.find(p => p.id === adId);
-    if (productToAdd) {
-      const productDocRef = doc(db, 'users', user.uid, 'affiliateProducts', productToAdd.id);
-      await setDoc(productDocRef, productToAdd);
+  const saveAd = useCallback(async (ad: Ad) => {
+    if (!user) return;
+    const savedAdRef = doc(db, 'users', user.uid, 'savedAds', ad.id);
+
+    if (isSaved(ad.id)) {
+      await deleteDoc(savedAdRef);
       toast({
-        title: "Product Converted!",
-        description: `${productToAdd.title} is now in your affiliate list.`,
+        description: `Removed "${ad.title}" from your saved ads.`,
+      });
+    } else {
+      await setDoc(savedAdRef, ad);
+      toast({
+        description: `Saved "${ad.title}".`,
       });
     }
-  }, [user, isAffiliate]);
-
-  const addToCart = useCallback(async (product: Product) => {
-    if (!user || isInCart(product.id)) return;
-    const cartItemRef = doc(db, 'users', user.uid, 'cart', product.id);
-    
-    await setDoc(cartItemRef, { product, quantity: 1 });
-    
-    toast({
-        title: "Added to Cart!",
-        description: `${product.title} has been added to your personal cart.`,
-    });
-  }, [user, isInCart]);
-
-  const updateCartQuantity = useCallback(async (productId: string, quantity: number) => {
-    if (!user) return;
-    const cartItemRef = doc(db, 'users', user.uid, 'cart', productId);
-    if (quantity <= 0) {
-      await deleteDoc(cartItemRef);
-    } else {
-      await setDoc(cartItemRef, { quantity }, { merge: true });
-    }
-  }, [user]);
-
-  const removeFromCart = useCallback(async (productId: string) => {
-     if (!user) return;
-     const cartItemRef = doc(db, 'users', user.uid, 'cart', productId);
-     await deleteDoc(cartItemRef);
-  }, [user]);
+  }, [user, isSaved, saved]);
   
   const closeOnboarding = useCallback(async () => {
     setShowOnboarding(false);
@@ -183,19 +143,14 @@ export function AdStoreProvider({ children }: { children: ReactNode }) {
   const value = {
     user,
     ads,
-    affiliateProducts,
-    cart,
+    saved,
     ratings,
     showOnboarding,
     isInitialized,
     rateAd,
-    convertToAffiliate,
-    addToCart,
-    updateCartQuantity,
-    removeFromCart,
+    saveAd,
     getRating,
-    isAffiliate,
-    isInCart,
+    isSaved,
     closeOnboarding,
   };
 
