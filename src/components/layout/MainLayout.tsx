@@ -13,6 +13,7 @@ import {
   SidebarInset,
   SidebarTrigger,
   SidebarFooter,
+  SidebarMenuBadge,
 } from '@/components/ui/sidebar';
 import {
   Home,
