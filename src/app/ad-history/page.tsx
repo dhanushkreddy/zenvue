@@ -22,8 +22,8 @@ export default function AdHistoryPage() {
   const categories = ['all', ...Array.from(new Set(ads.map(ad => ad.category)))];
 
   const renderSkeletons = () => (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-      {[...Array(4)].map((_, i) => (
+    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      {[...Array(8)].map((_, i) => (
         <Skeleton key={i} className="h-[420px] w-full" />
       ))}
     </div>
@@ -31,11 +31,11 @@ export default function AdHistoryPage() {
 
   return (
     <MainLayout>
-      <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
+      <div className="flex-1 space-y-8 p-4 md:p-8 pt-6">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between space-y-2">
           <div>
-            <h1 className="text-3xl font-bold tracking-tight">Ad History</h1>
-            <p className="text-muted-foreground">Review and manage the ads you've seen.</p>
+            <h1 className="text-4xl font-bold tracking-tight">Ad History</h1>
+            <p className="text-muted-foreground mt-2">Review and manage the ads you've seen.</p>
           </div>
         </div>
         
@@ -50,15 +50,15 @@ export default function AdHistoryPage() {
         {!isInitialized ? renderSkeletons() : (
           <>
             {filteredAds.length > 0 ? (
-              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {filteredAds.map(ad => (
                   <AdCard key={ad.id} ad={ad} />
                 ))}
               </div>
             ) : (
-              <div className="flex flex-col items-center justify-center text-center py-16">
+              <div className="flex flex-col items-center justify-center text-center py-20 rounded-xl bg-muted/50">
                 <h3 className="text-2xl font-bold tracking-tight">No Ads Found</h3>
-                <p className="text-muted-foreground">
+                <p className="text-muted-foreground mt-2">
                   Your ad history is empty or doesn't match the current filters.
                 </p>
               </div>

@@ -23,6 +23,7 @@ interface AdStoreState {
   removeFromCart: (productId: string) => void;
   getRating: (adId: string) => 'like' | 'dislike' | undefined;
   isAffiliate: (adId: string) => boolean;
+  isInCart: (productId: string) => boolean;
   closeOnboarding: () => void;
 }
 
@@ -98,6 +99,11 @@ export function AdStoreProvider({ children }: { children: ReactNode }) {
         // User is signed out
         signInAnonymously(auth).catch((error) => {
           console.error("Anonymous sign-in failed:", error);
+          toast({
+            variant: "destructive",
+            title: "Authentication Failed",
+            description: "Could not sign you in. Please check your Firebase configuration.",
+          });
         });
         setIsInitialized(false);
         setUser(null);
@@ -122,6 +128,8 @@ export function AdStoreProvider({ children }: { children: ReactNode }) {
   const getRating = useCallback((adId: string) => ratings[adId], [ratings]);
 
   const isAffiliate = useCallback((adId: string) => affiliateProducts.some(p => p.id === adId), [affiliateProducts]);
+  
+  const isInCart = useCallback((productId: string) => cart.some(item => item.product.id === productId), [cart]);
 
   const convertToAffiliate = useCallback(async (adId: string) => {
     if (!user || isAffiliate(adId)) return;
@@ -130,29 +138,23 @@ export function AdStoreProvider({ children }: { children: ReactNode }) {
       const productDocRef = doc(db, 'users', user.uid, 'affiliateProducts', productToAdd.id);
       await setDoc(productDocRef, productToAdd);
       toast({
-        title: "Affiliate Product Added!",
+        title: "Product Converted!",
         description: `${productToAdd.title} is now in your affiliate list.`,
       });
     }
   }, [user, isAffiliate]);
 
   const addToCart = useCallback(async (product: Product) => {
-    if (!user) return;
+    if (!user || isInCart(product.id)) return;
     const cartItemRef = doc(db, 'users', user.uid, 'cart', product.id);
-    const cartItemSnap = await getDoc(cartItemRef);
     
-    if (cartItemSnap.exists()) {
-      const currentQuantity = cartItemSnap.data().quantity;
-      await setDoc(cartItemRef, { product, quantity: currentQuantity + 1 }, { merge: true });
-    } else {
-      await setDoc(cartItemRef, { product, quantity: 1 });
-    }
+    await setDoc(cartItemRef, { product, quantity: 1 });
     
     toast({
         title: "Added to Cart!",
         description: `${product.title} has been added to your personal cart.`,
     });
-  }, [user]);
+  }, [user, isInCart]);
 
   const updateCartQuantity = useCallback(async (productId: string, quantity: number) => {
     if (!user) return;
@@ -193,6 +195,7 @@ export function AdStoreProvider({ children }: { children: ReactNode }) {
     removeFromCart,
     getRating,
     isAffiliate,
+    isInCart,
     closeOnboarding,
   };
 

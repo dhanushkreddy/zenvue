@@ -33,15 +33,15 @@ export function CartView() {
 
   if (cart.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center text-center py-16">
+      <div className="flex flex-col items-center justify-center text-center py-20 rounded-xl bg-muted/50">
         <h3 className="text-2xl font-bold tracking-tight">Your Cart is Empty</h3>
-        <p className="text-muted-foreground">Add some affiliate products to see them here.</p>
+        <p className="text-muted-foreground mt-2">Add some affiliate products to see them here.</p>
       </div>
     );
   }
 
   return (
-    <div className="grid md:grid-cols-3 gap-8">
+    <div className="grid md:grid-cols-3 gap-8 items-start">
       <div className="md:col-span-2">
         <Card>
           <CardHeader>
@@ -50,19 +50,19 @@ export function CartView() {
           <CardContent className="p-0">
             <div className="divide-y divide-border">
               {cart.map(({ product, quantity }) => (
-                <div key={product.id} className="flex items-center gap-4 p-4">
+                <div key={product.id} className="flex items-center gap-6 p-4">
                   <Image
                     src={product.thumbnail}
                     alt={product.title}
-                    width={80}
-                    height={80}
+                    width={96}
+                    height={96}
                     data-ai-hint={product.dataAiHint}
-                    className="rounded-md object-cover aspect-square"
+                    className="rounded-lg object-cover aspect-square"
                   />
                   <div className="flex-1">
                     <p className="font-semibold">{product.title}</p>
                     <p className="text-sm text-muted-foreground">{product.brand}</p>
-                    <p className="text-sm font-semibold">${product.price.toFixed(2)}</p>
+                    <p className="text-base font-semibold mt-1">${product.price.toFixed(2)}</p>
                   </div>
                   <div className="flex items-center gap-2">
                     <Input
@@ -70,7 +70,7 @@ export function CartView() {
                       min="1"
                       value={quantity}
                       onChange={(e) => updateCartQuantity(product.id, parseInt(e.target.value, 10) || 1)}
-                      className="w-16 h-9"
+                      className="w-16 h-10"
                     />
                     <Button
                       variant="ghost"
@@ -78,7 +78,7 @@ export function CartView() {
                       onClick={() => removeFromCart(product.id)}
                       aria-label="Remove item"
                     >
-                      <Trash2 className="h-4 w-4 text-destructive" />
+                      <Trash2 className="h-5 w-5 text-muted-foreground hover:text-destructive" />
                     </Button>
                   </div>
                 </div>
@@ -87,23 +87,23 @@ export function CartView() {
           </CardContent>
         </Card>
       </div>
-      <div>
+      <div className="sticky top-24">
         <Card>
           <CardHeader>
             <CardTitle>Order Summary</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex justify-between">
-              <span>Subtotal</span>
+              <span className="text-muted-foreground">Subtotal</span>
               <span>${subtotal.toFixed(2)}</span>
             </div>
             <div className="flex justify-between">
-              <span>Shipping</span>
+              <span className="text-muted-foreground">Shipping</span>
               <span>Free</span>
             </div>
             <div className="flex justify-between">
-              <span>Taxes</span>
-              <span>Calculated at checkout</span>
+              <span className="text-muted-foreground">Taxes</span>
+              <span className="text-muted-foreground">Calculated at checkout</span>
             </div>
             <Separator />
             <div className="flex justify-between font-bold text-lg">
@@ -111,13 +111,13 @@ export function CartView() {
               <span>${subtotal.toFixed(2)}</span>
             </div>
             <Separator />
-            <div className="flex justify-between items-center bg-primary/10 p-3 rounded-md">
-                <span className="font-semibold text-primary">Potential Earnings</span>
-                <span className="font-bold text-primary text-lg">${potentialEarnings.toFixed(2)}</span>
+            <div className="flex justify-between items-center bg-green-100 dark:bg-green-900/30 p-3 rounded-lg">
+                <span className="font-semibold text-green-700 dark:text-green-400">Potential Earnings</span>
+                <span className="font-bold text-green-700 dark:text-green-400 text-lg">${potentialEarnings.toFixed(2)}</span>
             </div>
           </CardContent>
           <CardFooter>
-            <Button className="w-full">Proceed to Checkout</Button>
+            <Button className="w-full h-11 text-base" size="lg">Proceed to Checkout</Button>
           </CardFooter>
         </Card>
       </div>

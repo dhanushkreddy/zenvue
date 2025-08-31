@@ -12,11 +12,11 @@ export default function ProfilePage() {
 
     return (
         <MainLayout>
-            <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
+            <div className="flex-1 space-y-8 p-4 md:p-8 pt-6">
                 <div className="flex items-center justify-between space-y-2">
                     <div>
-                        <h1 className="text-3xl font-bold tracking-tight">User Profile</h1>
-                        <p className="text-muted-foreground">Your anonymous user profile information.</p>
+                        <h1 className="text-4xl font-bold tracking-tight">User Profile</h1>
+                        <p className="text-muted-foreground mt-2">Your anonymous user profile information.</p>
                     </div>
                 </div>
 
@@ -27,25 +27,25 @@ export default function ProfilePage() {
                             This is an anonymous account. Your data is securely stored and associated with this unique ID.
                         </CardDescription>
                     </CardHeader>
-                    <CardContent className="space-y-4">
+                    <CardContent className="space-y-6">
                         <div className="flex items-center space-x-4">
-                            <Avatar className="h-16 w-16">
+                            <Avatar className="h-20 w-20">
                                 <AvatarFallback>
-                                    <User className="h-8 w-8" />
+                                    <User className="h-10 w-10" />
                                 </AvatarFallback>
                             </Avatar>
                             <div className="space-y-1">
-                                <p className="text-sm font-medium leading-none">User ID</p>
+                                <p className="text-sm font-medium leading-none text-muted-foreground">User ID</p>
                                 {isInitialized && user ? (
-                                    <p className="text-sm text-muted-foreground break-all">{user.uid}</p>
+                                    <p className="text-lg font-mono break-all text-foreground">{user.uid}</p>
                                 ) : (
-                                    <Skeleton className="h-5 w-64" />
+                                    <Skeleton className="h-6 w-80" />
                                 )}
                             </div>
                         </div>
                          <div className="space-y-1">
-                            <p className="text-sm font-medium leading-none">Authentication Type</p>
-                            <p className="text-sm text-muted-foreground">Anonymous</p>
+                            <p className="text-sm font-medium leading-none text-muted-foreground">Authentication Type</p>
+                            <p className="text-lg text-foreground">Anonymous</p>
                         </div>
                     </CardContent>
                 </Card>
