@@ -24,6 +24,7 @@ interface AdStoreState {
   rateAd: (adId: string, rating: 'like' | 'dislike') => void;
   getRating: (adId: string) => 'like' | 'dislike' | undefined;
   convertToAffiliate: (ad: Ad) => void;
+  removeAffiliateProduct: (productId: string) => void;
   isAffiliateProduct: (adId: string) => boolean;
   addToCart: (product: Product) => void;
   updateCartQuantity: (productId: string, quantity: number) => void;
@@ -149,6 +150,12 @@ export function AdStoreProvider({ children }: { children: ReactNode }) {
     const affiliateProductRef = doc(db, 'users', user.uid, 'affiliateProducts', ad.id);
     await setDoc(affiliateProductRef, productData);
   }, [user]);
+
+  const removeAffiliateProduct = useCallback(async (productId: string) => {
+    if (!user) return;
+    const affiliateProductRef = doc(db, 'users', user.uid, 'affiliateProducts', productId);
+    await deleteDoc(affiliateProductRef);
+  }, [user]);
   
   const addToCart = useCallback(async (product: Product) => {
     if (!user) return;
@@ -202,6 +209,7 @@ export function AdStoreProvider({ children }: { children: ReactNode }) {
     rateAd,
     getRating,
     convertToAffiliate,
+    removeAffiliateProduct,
     isAffiliateProduct,
     addToCart,
     updateCartQuantity,

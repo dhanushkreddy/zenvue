@@ -7,7 +7,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default function AffiliateProductsPage() {
-  const { affiliateProducts, isInitialized, addToCart, isInCart } = useAdStore();
+  const { affiliateProducts, isInitialized, addToCart, isInCart, removeAffiliateProduct } = useAdStore();
 
   const renderSkeletons = () => (
     <div className="space-y-4">
@@ -48,6 +48,7 @@ export default function AffiliateProductsPage() {
                                 key={product.id} 
                                 product={product} 
                                 onAddToCart={() => addToCart(product)}
+                                onRemove={() => removeAffiliateProduct(product.id)}
                                 isInCart={isInCart(product.id)}
                             />
                         ))}
