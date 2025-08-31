@@ -8,7 +8,8 @@ import { FilterControls } from '@/components/ads/FilterControls';
 import { Skeleton } from '@/components/ui/skeleton';
 import { toast } from '@/hooks/use-toast';
 import type { Ad } from '@/lib/types';
-
+import { format, isToday, isYesterday, parseISO } from 'date-fns';
+import { Separator } from '@/components/ui/separator';
 
 export default function AdHistoryPage() {
   const { ads, convertToAffiliate, isAffiliateProduct, isInitialized } = useAdStore();
@@ -38,6 +39,31 @@ export default function AdHistoryPage() {
       ))}
     </div>
   );
+  
+  const formatDate = (dateString: string) => {
+    const date = parseISO(dateString);
+    if (isToday(date)) return 'Today';
+    if (isYesterday(date)) return 'Yesterday';
+    return format(date, 'MMMM d, yyyy');
+  };
+
+  const groupedAds = filteredAds.reduce((acc, ad) => {
+    const dateKey = formatDate(ad.viewedDate);
+    if (!acc[dateKey]) {
+      acc[dateKey] = [];
+    }
+    acc[dateKey].push(ad);
+    return acc;
+  }, {} as Record<string, Ad[]>);
+
+  const sortedGroupKeys = Object.keys(groupedAds).sort((a, b) => {
+    if (a === 'Today') return -1;
+    if (b === 'Today') return 1;
+    if (a === 'Yesterday') return -1;
+    if (b === 'Yesterday') return 1;
+    return new Date(b).getTime() - new Date(a).getTime();
+  });
+
 
   return (
     <MainLayout>
@@ -60,14 +86,24 @@ export default function AdHistoryPage() {
         {!isInitialized ? renderSkeletons() : (
           <>
             {filteredAds.length > 0 ? (
-              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                {filteredAds.map(ad => (
-                  <AdCard 
-                    key={ad.id} 
-                    ad={ad}
-                    onConvert={() => handleConvert(ad)}
-                    isConverted={isAffiliateProduct(ad.id)}
-                  />
+               <div className="space-y-8">
+                {sortedGroupKeys.map(dateKey => (
+                  <div key={dateKey}>
+                    <div className="flex items-center gap-4">
+                        <h2 className="text-2xl font-bold tracking-tight">{dateKey}</h2>
+                        <Separator className="flex-1" />
+                    </div>
+                    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-4">
+                      {groupedAds[dateKey].map(ad => (
+                        <AdCard 
+                          key={ad.id} 
+                          ad={ad}
+                          onConvert={() => handleConvert(ad)}
+                          isConverted={isAffiliateProduct(ad.id)}
+                        />
+                      ))}
+                    </div>
+                  </div>
                 ))}
               </div>
             ) : (
