@@ -3,6 +3,7 @@ export interface Ad {
   brand: string;
   brandLogo: string;
   thumbnail: string;
+  dataAiHint: string;
   title: string;
   description: string;
   category: string;

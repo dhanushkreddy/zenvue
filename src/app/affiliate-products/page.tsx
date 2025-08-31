@@ -3,9 +3,18 @@
 import { MainLayout } from '@/components/layout/MainLayout';
 import { useAdStore } from '@/store/ad-store';
 import { ProductCard } from '@/components/products/ProductCard';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export default function AffiliateProductsPage() {
   const { affiliateProducts, isInitialized } = useAdStore();
+
+  const renderSkeletons = () => (
+    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      {[...Array(4)].map((_, i) => (
+        <Skeleton key={i} className="h-[420px] w-full" />
+      ))}
+    </div>
+  );
 
   return (
     <MainLayout>
@@ -17,19 +26,23 @@ export default function AffiliateProductsPage() {
           </div>
         </div>
         
-        {isInitialized && affiliateProducts.length > 0 ? (
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {affiliateProducts.map(product => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
-        ) : (
-          <div className="flex flex-col items-center justify-center text-center py-16">
-            <h3 className="text-2xl font-bold tracking-tight">No Affiliate Products Yet</h3>
-            <p className="text-muted-foreground">
-              Go to your Ad History to convert ads into affiliate products.
-            </p>
-          </div>
+        {!isInitialized ? renderSkeletons() : (
+          <>
+            {affiliateProducts.length > 0 ? (
+              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                {affiliateProducts.map(product => (
+                  <ProductCard key={product.id} product={product} />
+                ))}
+              </div>
+            ) : (
+              <div className="flex flex-col items-center justify-center text-center py-16">
+                <h3 className="text-2xl font-bold tracking-tight">No Affiliate Products Yet</h3>
+                <p className="text-muted-foreground">
+                  Go to your Ad History to convert ads into affiliate products.
+                </p>
+              </div>
+            )}
+          </>
         )}
       </div>
     </MainLayout>

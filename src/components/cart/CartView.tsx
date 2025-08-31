@@ -7,6 +7,7 @@ import { Input } from '../ui/input';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '../ui/card';
 import { Trash2 } from 'lucide-react';
 import { Separator } from '../ui/separator';
+import { Skeleton } from '../ui/skeleton';
 
 export function CartView() {
   const { cart, updateCartQuantity, removeFromCart, isInitialized } = useAdStore();
@@ -18,7 +19,16 @@ export function CartView() {
   );
 
   if (!isInitialized) {
-    return <div>Loading cart...</div>;
+    return (
+      <div className="grid md:grid-cols-3 gap-8">
+        <div className="md:col-span-2">
+          <Skeleton className="h-[400px] w-full" />
+        </div>
+        <div>
+          <Skeleton className="h-[300px] w-full" />
+        </div>
+      </div>
+    );
   }
 
   if (cart.length === 0) {

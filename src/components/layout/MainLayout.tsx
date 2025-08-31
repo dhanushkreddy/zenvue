@@ -24,7 +24,6 @@ import {
 } from 'lucide-react';
 import { Logo } from './Logo';
 import { Button } from '../ui/button';
-import { Badge } from '../ui/badge';
 import { useAdStore } from '@/store/ad-store';
 import { OnboardingModal } from '../OnboardingModal';
 
@@ -75,10 +74,15 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
         <SidebarFooter>
            <SidebarMenu>
              <SidebarMenuItem>
-                <SidebarMenuButton tooltip="Profile">
+                <Link href="/profile" className="w-full" passHref>
+                  <SidebarMenuButton
+                    isActive={pathname === '/profile'}
+                    tooltip="Profile"
+                  >
                     <UserCircle />
                     <span>User Profile</span>
-                </SidebarMenuButton>
+                  </SidebarMenuButton>
+                </Link>
             </SidebarMenuItem>
            </SidebarMenu>
         </SidebarFooter>
@@ -89,10 +93,12 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
           <div className="flex-1">
             {/* Can add breadcrumbs or page title here */}
           </div>
-          <Button variant="ghost" size="icon" className="rounded-full">
-            <UserCircle className="h-5 w-5" />
-            <span className="sr-only">Toggle user menu</span>
-          </Button>
+          <Link href="/profile">
+            <Button variant="ghost" size="icon" className="rounded-full">
+              <UserCircle className="h-5 w-5" />
+              <span className="sr-only">Toggle user menu</span>
+            </Button>
+          </Link>
         </header>
         <main className="flex-1 overflow-auto">{children}</main>
         <OnboardingModal />

@@ -5,6 +5,7 @@ import { MainLayout } from '@/components/layout/MainLayout';
 import { useAdStore } from '@/store/ad-store';
 import { AdCard } from '@/components/ads/AdCard';
 import { FilterControls } from '@/components/ads/FilterControls';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export default function AdHistoryPage() {
   const { ads, isInitialized } = useAdStore();
@@ -19,6 +20,14 @@ export default function AdHistoryPage() {
     .filter(ad => category === 'all' || ad.category === category);
   
   const categories = ['all', ...Array.from(new Set(ads.map(ad => ad.category)))];
+
+  const renderSkeletons = () => (
+    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      {[...Array(4)].map((_, i) => (
+        <Skeleton key={i} className="h-[420px] w-full" />
+      ))}
+    </div>
+  );
 
   return (
     <MainLayout>
@@ -38,19 +47,23 @@ export default function AdHistoryPage() {
           categories={categories}
         />
 
-        {isInitialized && filteredAds.length > 0 ? (
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {filteredAds.map(ad => (
-              <AdCard key={ad.id} ad={ad} />
-            ))}
-          </div>
-        ) : (
-          <div className="flex flex-col items-center justify-center text-center py-16">
-            <h3 className="text-2xl font-bold tracking-tight">No Ads Found</h3>
-            <p className="text-muted-foreground">
-              Your ad history is empty or doesn't match the current filters.
-            </p>
-          </div>
+        {!isInitialized ? renderSkeletons() : (
+          <>
+            {filteredAds.length > 0 ? (
+              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                {filteredAds.map(ad => (
+                  <AdCard key={ad.id} ad={ad} />
+                ))}
+              </div>
+            ) : (
+              <div className="flex flex-col items-center justify-center text-center py-16">
+                <h3 className="text-2xl font-bold tracking-tight">No Ads Found</h3>
+                <p className="text-muted-foreground">
+                  Your ad history is empty or doesn't match the current filters.
+                </p>
+              </div>
+            )}
+          </>
         )}
       </div>
     </MainLayout>
