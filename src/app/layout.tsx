@@ -3,7 +3,7 @@ import './globals.css';
 import { AppProvider } from '@/components/layout/AppProvider';
 
 export const metadata: Metadata = {
-  title: 'AdGram',
+  title: 'Zenvue',
   description: 'Your social feed for ads.',
 };
 

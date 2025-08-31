@@ -45,7 +45,7 @@ export function OnboardingModal() {
     <Dialog open={showOnboarding} onOpenChange={(open) => !open && closeOnboarding()}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Welcome to AdGram!</DialogTitle>
+          <DialogTitle>Welcome to Zenvue!</DialogTitle>
           <DialogDescription>
             Your new space to discover and save ads you love.
           </DialogDescription>

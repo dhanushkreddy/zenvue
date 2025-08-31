@@ -60,7 +60,7 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
         <SidebarHeader>
           <div className="flex items-center gap-2.5">
             <Logo className="size-7" />
-            <h2 className="text-xl font-semibold tracking-tight">AdGram</h2>
+            <h2 className="text-xl font-semibold tracking-tight">Zenvue</h2>
           </div>
         </SidebarHeader>
         <SidebarContent>
