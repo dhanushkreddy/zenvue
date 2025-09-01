@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, CheckCircle, Handshake, History } from 'lucide-react';
+import { CheckCircle, Handshake, History } from 'lucide-react';
 import { useScrollAnimation } from '@/hooks/use-scroll-animation';
 import { Logo } from '@/components/layout/Logo';
 import { cn } from '@/lib/utils';
@@ -27,8 +27,18 @@ const AnimatedSection = ({ children, className, id }: { children: React.ReactNod
   );
 };
 
-const FeatureCard = ({ icon: Icon, title, description }: { icon: React.ElementType, title: string, description: string }) => (
-    <div className="text-left p-8 rounded-2xl h-full flex flex-col transition-all duration-300 bg-card/5 backdrop-blur-sm border border-white/10 hover:bg-card/10 hover:border-white/20 hover:shadow-[0_0_20px_theme(colors.primary/0.3)]">
+const Sticker = ({ children, className }: { children: React.ReactNode, className?: string }) => (
+  <div className={cn(
+    "absolute font-accent text-lg md:text-xl text-center rounded-full bg-gradient-to-r from-fuchsia-500 to-pink-500 text-white py-2 px-5 shadow-lg transition-transform duration-300 ease-in-out hover:scale-110",
+    className
+  )}>
+    {children}
+  </div>
+)
+
+const FeatureCard = ({ icon: Icon, title, description, sticker, stickerClassName }: { icon: React.ElementType, title: string, description: string, sticker?: React.ReactNode, stickerClassName?: string }) => (
+    <div className="relative text-left p-8 rounded-2xl h-full flex flex-col transition-all duration-300 bg-card/5 backdrop-blur-sm border border-white/10 hover:bg-card/10 hover:border-white/20 hover:shadow-[0_0_20px_theme(colors.primary/0.3)]">
+        {sticker && <Sticker className={stickerClassName}>{sticker}</Sticker>}
         <div className="bg-primary/10 p-3 rounded-full w-fit">
             <Icon className="h-6 w-6 text-primary" />
         </div>
@@ -115,8 +125,9 @@ const LandingPage = () => {
         <div className="relative z-10">
           {/* Hero Section */}
           <section ref={heroRef} id="hero" className="flex h-screen min-h-[700px] items-center justify-center pt-20">
-            <div className="container text-center px-4">
+            <div className="container text-center px-4 relative">
                 <AnimatedSection>
+                  <Sticker className="-top-12 left-1/2 -translate-x-1/2 -rotate-6">It's a vibe ✨</Sticker>
                   <h1 className="text-5xl md:text-8xl font-black tracking-tighter bg-clip-text text-transparent bg-gradient-to-b from-white to-white/70">
                     Your Feed. Your Rules.
                   </h1>
@@ -130,15 +141,19 @@ const LandingPage = () => {
                   <p className="mt-6 max-w-2xl mx-auto text-lg text-muted-foreground">
                     Stop scrolling past good ads. Zenvue lets you save, track, and even earn from the ads you see.
                   </p>
-                  <div className="mt-8 max-w-lg mx-auto">
+                  <div className="mt-8 max-w-lg mx-auto relative">
+                     <svg className="absolute -top-14 -right-16 w-24 h-24 text-primary opacity-50 -rotate-[30deg]" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M16.9615 62.9615C16.9615 62.9615 47.9615 25.9615 28.4615 16.4615C8.96151 6.96154 13.4615 54.4615 16.9615 62.9615C22.2115 75.2115 45.4615 85.4615 56.9615 80.9615C68.4615 76.4615 87.4615 35.9615 80.9615 24.4615C74.4615 12.9615 48.9615 16.4615 56.9615 31.4615C64.9615 46.4615 84.4615 62.9615 80.9615 80.9615" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+
                     <form className="flex flex-col sm:flex-row gap-2">
                       <Input
                         type="email"
                         placeholder="Enter your email"
-                        className="h-12 text-base flex-1 rounded-full bg-white/10 border-black placeholder:text-white/70 focus-visible:ring-primary focus-visible:ring-offset-0 focus-visible:outline-none focus-visible:border-primary"
+                        className="h-12 text-base flex-1 rounded-full bg-white/10 border border-black placeholder:text-white/70 focus-visible:ring-primary focus-visible:ring-offset-0 focus-visible:outline-none focus-visible:border-primary"
                         aria-label="Email for early access"
                       />
-                      <Button size="lg" type="submit" className="h-12 text-base rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold shadow-[0_0_20px_theme(colors.primary/0.4)]">
+                      <Button size="lg" type="submit" className="h-12 text-base rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold shadow-[0_0_20px_theme(colors.primary/0.4)] animate-pulse hover:animate-none">
                         Get Early Access
                       </Button>
                     </form>
@@ -168,6 +183,8 @@ const LandingPage = () => {
                           icon={Handshake}
                           title="Earn Your Share"
                           description="Convert any ad into an affiliate product with a single click and earn a commission when you or others purchase through your link."
+                          sticker="No cap."
+                          stickerClassName="-top-4 -right-4 rotate-12"
                       />
                       <FeatureCard 
                           icon={CheckCircle}
