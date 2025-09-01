@@ -28,7 +28,7 @@ const AnimatedSection = ({ children, className, id }: { children: React.ReactNod
 };
 
 const FeatureCard = ({ icon: Icon, title, description }: { icon: React.ElementType, title: string, description: string }) => (
-    <div className="text-left p-8 rounded-2xl h-full flex flex-col transition-all duration-300 bg-card/5 backdrop-blur-sm border border-white/10 hover:bg-card/10">
+    <div className="text-left p-8 rounded-2xl h-full flex flex-col transition-all duration-300 bg-card/5 backdrop-blur-sm border border-white/10 hover:bg-card/10 hover:border-white/20">
         <div className="bg-primary/10 p-3 rounded-full w-fit">
             <Icon className="h-6 w-6 text-primary" />
         </div>
@@ -39,8 +39,8 @@ const FeatureCard = ({ icon: Icon, title, description }: { icon: React.ElementTy
 
 const LandingPage = () => {
   const [activeSection, setActiveSection] = useState('hero');
-  const section1Ref = useRef<HTMLDivElement>(null);
-  const section2Ref = useRef<HTMLDivElement>(null);
+  const heroRef = useRef<HTMLDivElement>(null);
+  const valuePropsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const observerOptions = {
@@ -59,18 +59,18 @@ const LandingPage = () => {
 
     const observer = new IntersectionObserver(observerCallback, observerOptions);
 
-    if (section1Ref.current) observer.observe(section1Ref.current);
-    if (section2Ref.current) observer.observe(section2Ref.current);
+    if (heroRef.current) observer.observe(heroRef.current);
+    if (valuePropsRef.current) observer.observe(valuePropsRef.current);
 
     return () => {
-      if (section1Ref.current) observer.unobserve(section1Ref.current);
-      if (section2Ref.current) observer.unobserve(section2Ref.current);
+      if (heroRef.current) observer.unobserve(heroRef.current);
+      if (valuePropsRef.current) observer.unobserve(valuePropsRef.current);
     };
   }, []);
 
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
-      <header className="fixed top-0 z-50 w-full bg-transparent backdrop-blur-md">
+      <header className="fixed top-0 z-50 w-full bg-background/30 backdrop-blur-lg border-b border-white/10">
         <div className="container mx-auto flex h-20 items-center justify-between px-4">
           <Link href="/" className="flex items-center gap-2">
             <Logo className="size-8" />
@@ -78,7 +78,7 @@ const LandingPage = () => {
           </Link>
           <div className="flex items-center gap-2">
              <Link href="/dashboard">
-                <Button variant="ghost" className="text-white hover:bg-white/10 hover:text-white">Sign In</Button>
+                <Button variant="ghost" className="hidden sm:inline-flex hover:bg-white/10 hover:text-white">Sign In</Button>
             </Link>
             <Link href="/dashboard">
               <Button className="bg-white text-black hover:bg-gray-200">Get Started <ArrowRight className="ml-2 h-4 w-4" /></Button>
@@ -90,19 +90,19 @@ const LandingPage = () => {
       <main className="flex-1">
         {/* Fixed Background Videos */}
         <div className="fixed inset-0 z-0">
-          <video
-            src="https://www.w3schools.com/html/mov_bbb.mp4"
+           <video
+            src="https://videos.coverr.co/video/coverr-a-person-in-a-dark-room-uses-a-laptop-and-a-smartphone-3023/1080p.mp4"
             autoPlay
             loop
             muted
             playsInline
             className={cn(
-              "object-cover w-full h-full transition-opacity duration-1000",
+              "object-cover w-full h-full absolute inset-0 transition-opacity duration-1000",
               activeSection === 'hero' ? 'opacity-20' : 'opacity-0'
             )}
           />
            <video
-            src="https://videos.coverr.co/video/coverr-a-person-in-a-dark-room-uses-a-laptop-and-a-smartphone-3023/1080p.mp4"
+            src="https://videos.coverr.co/video/coverr-a-man-working-on-his-laptop-in-a-modern-office-space-2621/1080p.mp4"
             autoPlay
             loop
             muted
@@ -112,21 +112,21 @@ const LandingPage = () => {
               activeSection === 'value-props' ? 'opacity-20' : 'opacity-0'
             )}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent"></div>
         </div>
 
         {/* Scrollable Content */}
         <div className="relative z-10">
           {/* Hero Section */}
-          <section ref={section1Ref} id="hero" className="flex h-screen min-h-[700px] items-center justify-center pt-20">
+          <section ref={heroRef} id="hero" className="flex h-screen min-h-[700px] items-center justify-center pt-20">
             <div className="container text-center px-4">
                 <AnimatedSection>
-                  <h1 className="text-5xl md:text-8xl font-black tracking-tighter">
+                  <h1 className="text-5xl md:text-8xl font-black tracking-tighter bg-clip-text text-transparent bg-gradient-to-b from-white to-white/70">
                     Own Your Feed.
                   </h1>
                 </AnimatedSection>
                 <AnimatedSection>
-                  <h2 className="text-5xl md:text-8xl font-black tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-600 mt-2">
+                  <h2 className="text-5xl md:text-8xl font-black tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-primary via-purple-500 to-pink-500 mt-2">
                     Earn Your Share.
                   </h2>
                 </AnimatedSection>
@@ -145,7 +145,7 @@ const LandingPage = () => {
           </section>
 
           {/* Core Value Propositions Section */}
-          <div ref={section2Ref} id="value-props">
+          <div ref={valuePropsRef} id="value-props">
             <AnimatedSection className="py-24 md:py-32">
                 <div className="container px-4">
                     <div className="text-center mb-16 max-w-3xl mx-auto">
@@ -220,14 +220,14 @@ const LandingPage = () => {
                 <h3 className="text-3xl font-bold">1. View Your Ad History</h3>
                 <p className="mt-4 text-muted-foreground">Every ad you encounter is automatically saved to your private history. Search, filter, and rediscover products you were interested in at any time.</p>
               </div>
-              <div className="rounded-xl overflow-hidden border border-border shadow-2xl">
+              <div className="rounded-xl overflow-hidden border-2 border-border shadow-2xl aspect-video">
                 <Image src="https://picsum.photos/800/600" alt="Ad History UI" width={800} height={600} data-ai-hint="ad history interface" className="w-full h-full object-cover" />
               </div>
             </div>
 
             {/* Step 2: Convert to Affiliate */}
             <div className="grid md:grid-cols-2 gap-16 items-center mb-24">
-               <div className="rounded-xl overflow-hidden border border-border shadow-2xl md:order-last">
+               <div className="rounded-xl overflow-hidden border-2 border-border shadow-2xl md:order-last aspect-video">
                 <Image src="https://picsum.photos/800/600" alt="Affiliate Conversion UI" width={800} height={600} data-ai-hint="product conversion button" className="w-full h-full object-cover" />
               </div>
               <div className="text-left">
@@ -242,7 +242,7 @@ const LandingPage = () => {
                 <h3 className="text-3xl font-bold">3. Rate and Personalize</h3>
                 <p className="mt-4 text-muted-foreground">Like or dislike ads to tailor your experience. Your feedback helps us show you more of what you love and less of what you don't.</p>
               </div>
-              <div className="rounded-xl overflow-hidden border border-border shadow-2xl">
+              <div className="rounded-xl overflow-hidden border-2 border-border shadow-2xl aspect-video">
                 <Image src="https://picsum.photos/800/600" alt="Ad Rating UI" width={800} height={600} data-ai-hint="like dislike buttons" className="w-full h-full object-cover" />
               </div>
             </div>
@@ -273,5 +273,3 @@ const LandingPage = () => {
 }
 
 export default LandingPage;
-
-    
