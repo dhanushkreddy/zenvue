@@ -4,29 +4,10 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { CheckCircle, Handshake, History } from 'lucide-react';
-import { useScrollAnimation } from '@/hooks/use-scroll-animation';
 import { Logo } from '@/components/layout/Logo';
 import { cn } from '@/lib/utils';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Input } from '@/components/ui/input';
-
-const AnimatedSection = ({ children, className }: { children: React.ReactNode, className?: string }) => {
-  const { ref, inView } = useScrollAnimation();
-  
-  return (
-    <section
-      ref={ref}
-      className={cn(
-        "transition-all duration-1000 ease-out",
-        inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10",
-        className
-      )}
-    >
-      {children}
-    </section>
-  );
-};
-
 
 const Sticker = ({ children, className }: { children: React.ReactNode, className?: string }) => (
   <div className={cn(
@@ -50,29 +31,50 @@ const FeatureCard = ({ icon: Icon, title, description, sticker, stickerClassName
 
 const Counter = ({ to }: { to: number }) => {
   const [count, setCount] = useState(0);
-  const { ref, inView } = useScrollAnimation();
+  const ref = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
-    if (inView) {
-      const duration = 1500; // ms
-      const frameRate = 1000 / 60; // 60fps
-      const totalFrames = Math.round(duration / frameRate);
-      let frame = 0;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+            const duration = 1500; // ms
+            const frameRate = 1000 / 60; // 60fps
+            const totalFrames = Math.round(duration / frameRate);
+            let frame = 0;
 
-      const counter = setInterval(() => {
-        frame++;
-        const progress = frame / totalFrames;
-        setCount(Math.round(to * progress));
+            const counter = setInterval(() => {
+                frame++;
+                const progress = frame / totalFrames;
+                setCount(Math.round(to * progress));
 
-        if (frame === totalFrames) {
-          clearInterval(counter);
-           setCount(to); // Ensure it ends on the exact number
+                if (frame === totalFrames) {
+                clearInterval(counter);
+                setCount(to); // Ensure it ends on the exact number
+                }
+            }, frameRate);
+
+            if (ref.current) {
+                observer.unobserve(ref.current);
+            }
+
+            return () => clearInterval(counter);
         }
-      }, frameRate);
+      },
+      {
+        threshold: 0.1,
+      }
+    );
 
-      return () => clearInterval(counter);
+    if (ref.current) {
+      observer.observe(ref.current);
     }
-  }, [inView, to]);
+    
+    return () => {
+        if (ref.current) {
+            observer.unobserve(ref.current)
+        }
+    }
+  }, [to]);
 
   return <span ref={ref}>{count.toLocaleString()}+</span>;
 }
@@ -109,17 +111,17 @@ const LandingPage = () => {
           {/* Hero Section */}
           <section className="flex h-screen min-h-[700px] items-center justify-center pt-20">
             <div className="container text-center px-4 relative">
-                <AnimatedSection>
+                
                   <h1 className="text-5xl md:text-8xl font-black tracking-tighter bg-clip-text text-transparent bg-gradient-to-b from-white to-white/70">
                     Your Feed. Your Rules.
                   </h1>
-                </AnimatedSection>
-                <AnimatedSection>
+                
+                
                   <h2 className="text-5xl md:text-8xl font-black tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-primary via-fuchsia-500 to-pink-500 mt-2">
                     Experience Zenvue.
                   </h2>
-                </AnimatedSection>
-                <AnimatedSection>
+                
+                
                   <p className="mt-6 max-w-2xl mx-auto text-lg text-muted-foreground">
                     Stop scrolling past good ads. Zenvue lets you save, track, and even earn from the ads you see.
                   </p>
@@ -141,13 +143,13 @@ const LandingPage = () => {
                     </form>
                     <p className="text-xs text-muted-foreground mt-2">No spam. Only exclusive updates.</p>
                   </div>
-                </AnimatedSection>
+                
             </div>
           </section>
 
           <main className="relative z-10 bg-background">
             {/* Social Proof Section */}
-            <AnimatedSection className="py-24 md:py-32 border-y">
+            <section className="py-24 md:py-32 border-y">
                 <div className="container px-4">
                      <div className="text-center mb-16 max-w-3xl mx-auto">
                         <h2 className="text-4xl md:text-6xl font-bold">Join <Counter to={5000} /> Early Adopters</h2>
@@ -170,10 +172,10 @@ const LandingPage = () => {
                         </div>
                     </div>
                 </div>
-            </AnimatedSection>
+            </section>
             
             {/* Core Value Propositions Section */}
-            <AnimatedSection className="py-24 md:py-32">
+            <section className="py-24 md:py-32">
                 <div className="container px-4">
                     <div className="text-center mb-16 max-w-3xl mx-auto">
                         <h2 className="text-4xl md:text-6xl font-bold">A Revolutionary Ad Experience</h2>
@@ -201,7 +203,7 @@ const LandingPage = () => {
                       />
                     </div>
                 </div>
-            </AnimatedSection>
+            </section>
           </main>
 
         </div>
