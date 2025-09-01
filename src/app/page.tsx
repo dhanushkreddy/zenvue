@@ -129,24 +129,46 @@ const LandingPage = () => {
       </main>
 
       <main className="relative z-10 bg-background">
-        {/* Video cards section */}
+        {/* See It In Action Section */}
         <AnimatedSection className="py-24 md:py-32">
           <div className="container px-4">
             <div className="text-center mb-16 max-w-3xl mx-auto">
-              <h2 className="text-4xl md:text-6xl font-bold">See It In Action</h2>
+              <h2 className="text-4xl md:text-6xl font-bold">How It Works</h2>
               <p className="mt-4 text-lg text-muted-foreground">
-                From your feed to your wallet.
+                From your feed to your wallet, in a few simple steps.
               </p>
             </div>
-            <div className="grid md:grid-cols-3 gap-8">
-              <div className="rounded-xl overflow-hidden border border-border shadow-2xl transition-all duration-300 hover:shadow-primary/20 hover:-translate-y-2">
-                <video src="https://www.w3schools.com/html/mov_bbb.mp4" autoPlay loop muted playsInline className="w-full h-full object-cover" />
+            
+            {/* Step 1: Ad History */}
+            <div className="grid md:grid-cols-2 gap-16 items-center mb-24">
+              <div className="text-left">
+                <h3 className="text-3xl font-bold">1. View Your Ad History</h3>
+                <p className="mt-4 text-muted-foreground">Every ad you encounter is automatically saved to your private history. Search, filter, and rediscover products you were interested in at any time.</p>
               </div>
-              <div className="rounded-xl overflow-hidden border border-border shadow-2xl transition-all duration-300 hover:shadow-primary/20 hover:-translate-y-2">
-                <video src="https://www.w3schools.com/html/mov_bbb.mp4" autoPlay loop muted playsInline className="w-full h-full object-cover" />
+              <div className="rounded-xl overflow-hidden border border-border shadow-2xl">
+                <Image src="https://picsum.photos/800/600" alt="Ad History UI" width={800} height={600} data-ai-hint="ad history" className="w-full h-full object-cover" />
               </div>
-              <div className="rounded-xl overflow-hidden border border-border shadow-2xl transition-all duration-300 hover:shadow-primary/20 hover:-translate-y-2">
-                <video src="https://www.w3schools.com/html/mov_bbb.mp4" autoPlay loop muted playsInline className="w-full h-full object-cover" />
+            </div>
+
+            {/* Step 2: Convert to Affiliate */}
+            <div className="grid md:grid-cols-2 gap-16 items-center mb-24">
+               <div className="rounded-xl overflow-hidden border border-border shadow-2xl md:order-last">
+                <Image src="https://picsum.photos/800/600" alt="Affiliate Conversion UI" width={800} height={600} data-ai-hint="affiliate conversion" className="w-full h-full object-cover" />
+              </div>
+              <div className="text-left">
+                <h3 className="text-3xl font-bold">2. Convert and Earn</h3>
+                <p className="mt-4 text-muted-foreground">With a single click, transform any ad into an affiliate product. You'll earn a commission whenever a purchase is made through your converted link.</p>
+              </div>
+            </div>
+
+            {/* Step 3: Rate and Personalize */}
+            <div className="grid md:grid-cols-2 gap-16 items-center">
+              <div className="text-left">
+                <h3 className="text-3xl font-bold">3. Rate and Personalize</h3>
+                <p className="mt-4 text-muted-foreground">Like or dislike ads to tailor your experience. Your feedback helps us show you more of what you love and less of what you don't.</p>
+              </div>
+              <div className="rounded-xl overflow-hidden border border-border shadow-2xl">
+                <Image src="https://picsum.photos/800/600" alt="Ad Rating UI" width={800} height={600} data-ai-hint="ad rating" className="w-full h-full object-cover" />
               </div>
             </div>
           </div>
