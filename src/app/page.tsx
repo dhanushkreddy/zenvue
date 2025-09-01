@@ -127,7 +127,6 @@ const LandingPage = () => {
           <section ref={heroRef} id="hero" className="flex h-screen min-h-[700px] items-center justify-center pt-20">
             <div className="container text-center px-4 relative">
                 <AnimatedSection>
-                  <Sticker className="-top-12 left-1/2 -translate-x-1/2 -rotate-6">It's a vibe ✨</Sticker>
                   <h1 className="text-5xl md:text-8xl font-black tracking-tighter bg-clip-text text-transparent bg-gradient-to-b from-white to-white/70">
                     Your Feed. Your Rules.
                   </h1>
@@ -150,7 +149,7 @@ const LandingPage = () => {
                       <Input
                         type="email"
                         placeholder="Enter your email"
-                        className="h-12 text-base flex-1 rounded-full bg-white/10 border border-black placeholder:text-white/70 focus-visible:ring-primary focus-visible:ring-offset-0 focus-visible:outline-none focus-visible:border-primary"
+                        className="h-12 text-base flex-1 rounded-full bg-white/10 border border-black/50 placeholder:text-white/70 focus-visible:ring-primary focus-visible:ring-offset-0 focus-visible:outline-none focus-visible:border-primary"
                         aria-label="Email for early access"
                       />
                       <Button size="lg" type="submit" className="h-12 text-base rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold shadow-[0_0_20px_theme(colors.primary/0.4)] animate-pulse hover:animate-none">
@@ -250,3 +249,5 @@ const LandingPage = () => {
 };
 
 export default LandingPage;
+
+    
