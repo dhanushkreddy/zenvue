@@ -7,7 +7,9 @@ import { CheckCircle, Handshake, History } from 'lucide-react';
 import { Logo } from '@/components/layout/Logo';
 import { cn } from '@/lib/utils';
 import { useEffect, useState, useRef } from 'react';
+import { useFormState, useFormStatus } from 'react-dom';
 import { Input } from '@/components/ui/input';
+import { getEarlyAccessUserCount, addEarlyAccessUser } from './actions';
 
 const Sticker = ({ children, className }: { children: React.ReactNode, className?: string }) => (
   <div className={cn(
@@ -18,9 +20,10 @@ const Sticker = ({ children, className }: { children: React.ReactNode, className
   </div>
 )
 
-const FeatureCard = ({ icon: Icon, title, description, sticker, stickerClassName }: { icon: React.ElementType, title: string, description: string, sticker?: React.ReactNode, stickerClassName?: string }) => (
+const FeatureCard = ({ icon: Icon, title, description, sticker, stickerClassName, doodle }: { icon: React.ElementType, title: string, description: string, sticker?: React.ReactNode, stickerClassName?: string, doodle?: React.ReactNode }) => (
     <div className="relative text-left p-8 rounded-2xl h-full flex flex-col transition-all duration-300 bg-card/5 backdrop-blur-sm border border-white/10 hover:bg-card/10 hover:border-white/20 hover:shadow-[0_0_20px_theme(colors.primary/0.3)]">
         {sticker && <Sticker className={stickerClassName}>{sticker}</Sticker>}
+        {doodle}
         <div className="bg-primary/10 p-3 rounded-full w-fit">
             <Icon className="h-6 w-6 text-primary" />
         </div>
@@ -79,8 +82,48 @@ const Counter = ({ to }: { to: number }) => {
   return <span ref={ref} className="font-sans" style={{ fontVariantNumeric: 'tabular-nums' }}>{count.toLocaleString()}+</span>;
 }
 
+const EarlyAccessForm = () => {
+  const [state, formAction] = useFormState(addEarlyAccessUser, { message: '', success: false });
+  const { pending } = useFormStatus();
+  const formRef = useRef<HTMLFormElement>(null);
+
+  useEffect(() => {
+    if (state.success) {
+      formRef.current?.reset();
+    }
+  }, [state.success]);
+
+  return (
+    <form ref={formRef} action={formAction} className="flex flex-col sm:flex-row gap-2">
+      <Input
+        type="email"
+        name="email"
+        placeholder="Enter your email"
+        className="h-12 text-base flex-1 rounded-full bg-white/10 border-black/50 placeholder:text-white/70 focus-visible:ring-primary focus-visible:ring-offset-0 focus-visible:outline-none focus-visible:border-black"
+        aria-label="Email for early access"
+        required
+      />
+      <Button size="lg" type="submit" className="h-12 text-base rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold shadow-[0_0_20px_theme(colors.primary/0.4)] animate-pulse hover:animate-none" disabled={pending}>
+        {pending ? 'Joining...' : 'Get Early Access'}
+      </Button>
+      {state.message && (
+        <p className={`text-sm mt-2 ${state.success ? 'text-green-400' : 'text-red-400'}`}>{state.message}</p>
+      )}
+    </form>
+  )
+}
 
 const LandingPage = () => {
+  const [userCount, setUserCount] = useState(5000); // Default value
+
+  useEffect(() => {
+    const fetchCount = async () => {
+      const count = await getEarlyAccessUserCount();
+      setUserCount(count);
+    };
+    fetchCount();
+  }, []);
+
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
       <header className="fixed top-0 z-50 w-full bg-background/80 border-b border-white/10">
@@ -120,17 +163,7 @@ const LandingPage = () => {
                       <path d="M16.9615 62.9615C16.9615 62.9615 47.9615 25.9615 28.4615 16.4615C8.96151 6.96154 13.4615 54.4615 16.9615 62.9615C22.2115 75.2115 45.4615 85.4615 56.9615 80.9615C68.4615 76.4615 87.4615 35.9615 80.9615 24.4615C74.4615 12.9615 48.9615 16.4615 56.9615 31.4615C64.9615 46.4615 84.4615 62.9615 80.9615 80.9615" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
 
-                    <form className="flex flex-col sm:flex-row gap-2">
-                      <Input
-                        type="email"
-                        placeholder="Enter your email"
-                        className="h-12 text-base flex-1 rounded-full bg-white/10 border-black/50 placeholder:text-white/70 focus-visible:ring-primary focus-visible:ring-offset-0 focus-visible:outline-none focus-visible:border-black"
-                        aria-label="Email for early access"
-                      />
-                      <Button size="lg" type="submit" className="h-12 text-base rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold shadow-[0_0_20px_theme(colors.primary/0.4)] animate-pulse hover:animate-none">
-                        Get Early Access
-                      </Button>
-                    </form>
+                    <EarlyAccessForm />
                     <p className="text-xs text-muted-foreground mt-2">No spam. Only exclusive updates.</p>
                   </div>
                 
@@ -141,12 +174,7 @@ const LandingPage = () => {
             {/* Social Proof Section */}
             <section className="py-24 md:py-32 border-y">
                 <div className="container px-4">
-                     <div className="text-center mb-16 max-w-3xl mx-auto">
-                        <h2 className="text-4xl md:text-6xl font-bold whitespace-nowrap">Join <Counter to={5000} /> Early Adopters</h2>
-                        <p className="mt-4 text-lg text-muted-foreground">
-                            Be part of the community shaping the future of online advertising.
-                        </p>
-                    </div>
+                     <h2 className="text-4xl md:text-6xl font-bold whitespace-nowrap text-center mb-16">Join <Counter to={userCount} /> Early Adopters</h2>
                     <div className="grid md:grid-cols-3 gap-8 text-left">
                         <div className="p-8 rounded-xl bg-card border">
                             <p className="text-muted-foreground">"Zenvue is a game-changer. I finally feel in control of my ad experience and I'm earning from it!"</p>
@@ -178,6 +206,7 @@ const LandingPage = () => {
                           icon={History}
                           title="Full Transparency"
                           description="Access a complete, searchable history of every ad you've seen. Never lose track of a product you were interested in."
+                          doodle={<svg className="absolute -top-8 -left-8 w-24 h-24 text-primary opacity-30" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 50 C40 20, 60 20, 80 50 C60 80, 40 80, 20 50 Z" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/></svg>}
                       />
                       <FeatureCard 
                           icon={Handshake}
@@ -221,3 +250,5 @@ const LandingPage = () => {
 };
 
 export default LandingPage;
+
+    
