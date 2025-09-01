@@ -1,3 +1,4 @@
+
 'use client';
 
 import Image from 'next/image';
@@ -37,7 +38,7 @@ const FeatureCard = ({ icon: Icon, title, description }: { icon: React.ElementTy
 const LandingPage = () => {
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
-      <header className="fixed top-0 z-50 w-full bg-transparent">
+      <header className="fixed top-0 z-50 w-full bg-transparent backdrop-blur-md">
         <div className="container mx-auto flex h-20 items-center justify-between px-4">
           <Link href="/" className="flex items-center gap-2">
             <Logo className="size-8" />
@@ -73,20 +74,26 @@ const LandingPage = () => {
           {/* Hero Section */}
           <section className="flex h-screen min-h-[700px] items-center justify-center pt-20">
             <div className="container text-center px-4">
-                <h1 className="text-5xl md:text-8xl font-black tracking-tighter">
-                  Own Your Feed.
-                </h1>
-                <h2 className="text-5xl md:text-8xl font-black tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-600 mt-2">
-                  Earn Your Share.
-                </h2>
-                <p className="mt-6 max-w-2xl mx-auto text-lg text-muted-foreground">
-                  Zenvue transforms your ad experience. See your ad history, turn ads into affiliate products, and earn commissions—all in one place.
-                </p>
-                <div className="mt-8">
-                  <Link href="/dashboard">
-                    <Button size="lg" className="h-12 text-base bg-white text-black hover:bg-gray-200">Get Early Access</Button>
-                  </Link>
-                </div>
+                <AnimatedSection>
+                  <h1 className="text-5xl md:text-8xl font-black tracking-tighter">
+                    Own Your Feed.
+                  </h1>
+                </AnimatedSection>
+                <AnimatedSection>
+                  <h2 className="text-5xl md:text-8xl font-black tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-600 mt-2">
+                    Earn Your Share.
+                  </h2>
+                </AnimatedSection>
+                <AnimatedSection>
+                  <p className="mt-6 max-w-2xl mx-auto text-lg text-muted-foreground">
+                    Zenvue transforms your ad experience. See your ad history, turn ads into affiliate products, and earn commissions—all in one place.
+                  </p>
+                  <div className="mt-8">
+                    <Link href="/dashboard">
+                      <Button size="lg" className="h-12 text-base bg-white text-black hover:bg-gray-200">Get Early Access</Button>
+                    </Link>
+                  </div>
+                </AnimatedSection>
             </div>
           </section>
 
@@ -129,13 +136,13 @@ const LandingPage = () => {
                 </p>
               </div>
               <div className="grid md:grid-cols-3 gap-8">
-                <div className="rounded-xl overflow-hidden border border-white/10 shadow-2xl">
+                <div className="rounded-xl overflow-hidden border border-white/10 shadow-2xl transition-all duration-300 hover:shadow-primary/20 hover:-translate-y-2">
                   <video src="https://www.w3schools.com/html/mov_bbb.mp4" autoPlay loop muted playsInline className="w-full h-full object-cover" />
                 </div>
-                <div className="rounded-xl overflow-hidden border border-white/10 shadow-2xl">
+                <div className="rounded-xl overflow-hidden border border-white/10 shadow-2xl transition-all duration-300 hover:shadow-primary/20 hover:-translate-y-2">
                   <video src="https://www.w3schools.com/html/mov_bbb.mp4" autoPlay loop muted playsInline className="w-full h-full object-cover" />
                 </div>
-                <div className="rounded-xl overflow-hidden border border-white/10 shadow-2xl">
+                <div className="rounded-xl overflow-hidden border border-white/10 shadow-2xl transition-all duration-300 hover:shadow-primary/20 hover:-translate-y-2">
                   <video src="https://www.w3schools.com/html/mov_bbb.mp4" autoPlay loop muted playsInline className="w-full h-full object-cover" />
                 </div>
               </div>
@@ -144,7 +151,7 @@ const LandingPage = () => {
         </div>
       </main>
 
-      <footer className="relative z-10 bg-background">
+      <footer className="relative z-10 bg-background/50 border-t border-white/10">
         <div className="container mx-auto py-12 px-4">
             <div className="flex flex-col md:flex-row items-center justify-between gap-8">
                 <div className="flex items-center gap-2">
@@ -157,7 +164,7 @@ const LandingPage = () => {
                     <Link href="#" className="text-muted-foreground hover:text-foreground transition-colors">Contact</Link>
                 </div>
             </div>
-            <div className="mt-8 pt-8 border-t border-border text-center text-sm text-muted-foreground">
+            <div className="mt-8 pt-8 border-t border-white/10 text-center text-sm text-muted-foreground">
                 <p>&copy; {new Date().getFullYear()} Zenvue. All rights reserved.</p>
             </div>
         </div>
