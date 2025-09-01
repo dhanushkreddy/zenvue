@@ -91,6 +91,7 @@ const LandingPage = () => {
   const [activeSection, setActiveSection] = useState('hero');
   const heroRef = useRef<HTMLDivElement>(null);
   const valuePropsRef = useRef<HTMLDivElement>(null);
+  const socialProofRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const observerOptions = {
@@ -109,16 +110,15 @@ const LandingPage = () => {
 
     const observer = new IntersectionObserver(observerCallback, observerOptions);
 
-    if (heroRef.current) observer.observe(heroRef.current);
-    if (valuePropsRef.current) observer.observe(valuePropsRef.current);
+    const refs = [heroRef, valuePropsRef, socialProofRef];
+    refs.forEach(ref => {
+      if (ref.current) observer.observe(ref.current);
+    });
 
     return () => {
-      if (heroRef.current) {
-        observer.unobserve(heroRef.current);
-      }
-      if (valuePropsRef.current) {
-        observer.unobserve(valuePropsRef.current);
-      }
+      refs.forEach(ref => {
+        if (ref.current) observer.unobserve(ref.current);
+      });
     };
   }, []);
 
@@ -144,7 +144,7 @@ const LandingPage = () => {
             playsInline
             className={cn(
               "object-cover w-full h-full absolute inset-0 transition-opacity duration-1000",
-              activeSection === 'hero' ? 'opacity-20' : 'opacity-0'
+              (activeSection === 'hero' || activeSection === 'social-proof') ? 'opacity-20' : 'opacity-0'
             )}
           />
            <video
@@ -189,7 +189,7 @@ const LandingPage = () => {
                       <Input
                         type="email"
                         placeholder="Enter your email"
-                        className="h-12 text-base flex-1 rounded-full bg-white/10 border-black/50 placeholder:text-white/70 focus-visible:ring-primary focus-visible:ring-offset-0 focus-visible:outline-none focus-visible:border-primary border"
+                        className="h-12 text-base flex-1 rounded-full bg-white/10 border border-black/50 placeholder:text-white/70 focus-visible:ring-primary focus-visible:ring-offset-0 focus-visible:outline-none focus-visible:border-primary"
                         aria-label="Email for early access"
                       />
                       <Button size="lg" type="submit" className="h-12 text-base rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold shadow-[0_0_20px_theme(colors.primary/0.4)] animate-pulse hover:animate-none">
@@ -202,8 +202,36 @@ const LandingPage = () => {
             </div>
           </section>
 
+          <main className="relative z-10 bg-background">
+            {/* Social Proof Section */}
+            <AnimatedSection id="social-proof" innerRef={socialProofRef} className="py-24 md:py-32 border-y">
+                <div className="container px-4">
+                     <div className="text-center mb-16 max-w-3xl mx-auto">
+                        <h2 className="text-4xl md:text-6xl font-bold">Join <Counter to={5000} /> Early Adopters</h2>
+                        <p className="mt-4 text-lg text-muted-foreground">
+                            Be part of the community shaping the future of online advertising.
+                        </p>
+                    </div>
+                    <div className="grid md:grid-cols-3 gap-8 text-left">
+                        <div className="p-8 rounded-xl bg-card border">
+                            <p className="text-muted-foreground">"Zenvue is a game-changer. I finally feel in control of my ad experience and I'm earning from it!"</p>
+                            <p className="font-bold mt-4">- Sarah J.</p>
+                        </div>
+                         <div className="p-8 rounded-xl bg-card border">
+                            <p className="text-muted-foreground">"The ability to look back at my ad history is something I didn't know I needed. It's brilliant."</p>
+                            <p className="font-bold mt-4">- Mike R.</p>
+                        </div>
+                         <div className="p-8 rounded-xl bg-card border">
+                            <p className="text-muted-foreground">"Converting ads to affiliate links is seamless. It's the perfect side-hustle for anyone who shops online."</p>
+                            <p className="font-bold mt-4">- Emily T.</p>
+                        </div>
+                    </div>
+                </div>
+            </AnimatedSection>
+          </main>
+
           {/* Core Value Propositions Section */}
-          <div ref={valuePropsRef} id="value-props">
+          <div id="value-props" ref={valuePropsRef}>
             <AnimatedSection className="py-24 md:py-32">
                 <div className="container px-4">
                     <div className="text-center mb-16 max-w-3xl mx-auto">
@@ -235,34 +263,6 @@ const LandingPage = () => {
             </AnimatedSection>
           </div>
         </div>
-      </main>
-
-       <main className="relative z-10 bg-background">
-        {/* Social Proof Section */}
-        <AnimatedSection className="py-24 md:py-32 border-y">
-            <div className="container px-4">
-                 <div className="text-center mb-16 max-w-3xl mx-auto">
-                    <h2 className="text-4xl md:text-6xl font-bold">Join <Counter to={5000} /> Early Adopters</h2>
-                    <p className="mt-4 text-lg text-muted-foreground">
-                        Be part of the community shaping the future of online advertising.
-                    </p>
-                </div>
-                <div className="grid md:grid-cols-3 gap-8 text-left">
-                    <div className="p-8 rounded-xl bg-card border">
-                        <p className="text-muted-foreground">"Zenvue is a game-changer. I finally feel in control of my ad experience and I'm earning from it!"</p>
-                        <p className="font-bold mt-4">- Sarah J.</p>
-                    </div>
-                     <div className="p-8 rounded-xl bg-card border">
-                        <p className="text-muted-foreground">"The ability to look back at my ad history is something I didn't know I needed. It's brilliant."</p>
-                        <p className="font-bold mt-4">- Mike R.</p>
-                    </div>
-                     <div className="p-8 rounded-xl bg-card border">
-                        <p className="text-muted-foreground">"Converting ads to affiliate links is seamless. It's the perfect side-hustle for anyone who shops online."</p>
-                        <p className="font-bold mt-4">- Emily T.</p>
-                    </div>
-                </div>
-            </div>
-        </AnimatedSection>
       </main>
 
 
