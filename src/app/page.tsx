@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from 'next/link';
@@ -7,6 +8,7 @@ import { useScrollAnimation } from '@/hooks/use-scroll-animation';
 import { Logo } from '@/components/layout/Logo';
 import { cn } from '@/lib/utils';
 import { useEffect, useRef, useState } from 'react';
+import { Input } from '@/components/ui/input';
 
 const AnimatedSection = ({ children, className, id }: { children: React.ReactNode, className?: string, id?: string }) => {
   const { ref, inView } = useScrollAnimation();
@@ -61,8 +63,12 @@ const LandingPage = () => {
     if (valuePropsRef.current) observer.observe(valuePropsRef.current);
 
     return () => {
-      if (heroRef.current) observer.unobserve(heroRef.current);
-      if (valuePropsRef.current) observer.unobserve(valuePropsRef.current);
+      if (heroRef.current) {
+        observer.unobserve(heroRef.current);
+      }
+      if (valuePropsRef.current) {
+        observer.unobserve(valuePropsRef.current);
+      }
     };
   }, []);
 
@@ -74,14 +80,6 @@ const LandingPage = () => {
             <Logo className="size-8" />
             <span className="text-2xl font-bold">Zenvue</span>
           </Link>
-          <div className="flex items-center gap-2">
-             <Link href="/dashboard">
-                <Button variant="ghost" className="hidden sm:inline-flex hover:bg-white/10 hover:text-white">Sign In</Button>
-            </Link>
-            <Link href="/dashboard">
-              <Button className="bg-white text-black hover:bg-gray-200">Get Started <ArrowRight className="ml-2 h-4 w-4" /></Button>
-            </Link>
-          </div>
         </div>
       </header>
 
@@ -132,11 +130,19 @@ const LandingPage = () => {
                   <p className="mt-6 max-w-2xl mx-auto text-lg text-muted-foreground">
                     Zenvue transforms your ad experience. See your ad history, turn ads into affiliate products, and earn commissions—all in one place.
                   </p>
-                  <div className="mt-8">
-                    <Link href="/dashboard">
-                      <Button size="lg" className="h-12 text-base bg-white text-black hover:bg-gray-200">Get Early Access</Button>
-                    </Link>
-                     <p className="text-xs text-muted-foreground mt-2">No spam, just exclusive updates.</p>
+                  <div className="mt-8 max-w-lg mx-auto">
+                    <form className="flex flex-col sm:flex-row gap-2">
+                      <Input 
+                        type="email" 
+                        placeholder="Enter your email address" 
+                        className="h-12 text-base flex-1 bg-white/10 border-white/20 placeholder:text-white/60 focus-visible:ring-white" 
+                        aria-label="Email for early access"
+                      />
+                      <Button size="lg" type="submit" className="h-12 text-base bg-white text-black hover:bg-gray-200">
+                        Get Early Access
+                      </Button>
+                    </form>
+                    <p className="text-xs text-muted-foreground mt-2">No spam, just exclusive updates.</p>
                   </div>
                 </AnimatedSection>
             </div>
@@ -227,3 +233,5 @@ const LandingPage = () => {
 };
 
 export default LandingPage;
+
+    
