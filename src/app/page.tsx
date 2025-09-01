@@ -132,13 +132,13 @@ const LandingPage = () => {
                   </p>
                   <div className="mt-8 max-w-lg mx-auto">
                     <form className="flex flex-col sm:flex-row gap-2">
-                      <Input 
-                        type="email" 
-                        placeholder="Enter your email" 
-                        className="h-12 text-base flex-1 rounded-none bg-transparent border-b border-white placeholder:text-white/70 focus-visible:ring-primary focus-visible:ring-offset-0 focus-visible:outline-none focus-visible:border-b-primary" 
+                      <Input
+                        type="email"
+                        placeholder="Enter your email"
+                        className="h-12 text-base flex-1 rounded-full bg-white/10 border-white/20 placeholder:text-white/70 focus-visible:ring-primary focus-visible:ring-offset-0 focus-visible:outline-none focus-visible:border-primary"
                         aria-label="Email for early access"
                       />
-                      <Button size="lg" type="submit" className="h-12 text-base bg-primary hover:bg-primary/90 text-primary-foreground font-bold shadow-[0_0_20px_theme(colors.primary/0.4)]">
+                      <Button size="lg" type="submit" className="h-12 text-base rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold shadow-[0_0_20px_theme(colors.primary/0.4)]">
                         Get Early Access
                       </Button>
                     </form>
