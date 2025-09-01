@@ -6,8 +6,8 @@ import { Button } from '@/components/ui/button';
 import { CheckCircle, Handshake, History } from 'lucide-react';
 import { Logo } from '@/components/layout/Logo';
 import { cn } from '@/lib/utils';
-import { useEffect, useState, useRef } from 'react';
-import { useFormState, useFormStatus } from 'react-dom';
+import { useEffect, useState, useRef, useActionState } from 'react';
+import { useFormStatus } from 'react-dom';
 import { Input } from '@/components/ui/input';
 import { getEarlyAccessUserCount, addEarlyAccessUser } from './actions';
 
@@ -83,7 +83,7 @@ const Counter = ({ to }: { to: number }) => {
 }
 
 const EarlyAccessForm = () => {
-  const [state, formAction] = useFormState(addEarlyAccessUser, { message: '', success: false });
+  const [state, formAction] = useActionState(addEarlyAccessUser, { message: '', success: false });
   const { pending } = useFormStatus();
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -126,7 +126,7 @@ const LandingPage = () => {
 
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
-      <header className="fixed top-0 z-50 w-full bg-background/80 border-b border-white/10">
+      <header className="fixed top-0 z-50 w-full bg-background/80 border-b border-white/10 backdrop-blur-sm">
         <div className="container mx-auto flex h-20 items-center justify-between px-4">
           <Link href="/" className="flex items-center gap-2">
             <Logo className="size-8" />
