@@ -183,8 +183,6 @@ const LandingPage = () => {
                           icon={Handshake}
                           title="Earn Your Share"
                           description="Convert any ad into an affiliate product with a single click and earn a commission when you or others purchase through your link."
-                          sticker="No cap."
-                          stickerClassName="-top-4 -right-4 rotate-12"
                       />
                       <FeatureCard 
                           icon={CheckCircle}
