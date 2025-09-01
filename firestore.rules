@@ -1,15 +1,18 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Users can only read and write to their own data.
-    match /users/{userId}/{document=**} {
-      allow read, write: if request.auth != null && request.auth.uid == userId;
+    // Secure the early access list.
+    // - Deny all reads by default to prevent email scraping.
+    // - Allow anyone to create a new document (sign up).
+    match /earlyAccessUsers/{docId} {
+      allow read: if false; // Deny reads to protect email privacy.
+      allow create: if request.resource.data.email is string && request.resource.data.signedUpAt == request.time;
+      allow update, delete: if false; // Prevent tampering.
     }
 
-    // Allow public sign-ups for the early access list.
-    match /earlyAccessUsers/{docId} {
-      allow get, list, create: if true;
-      allow update, delete: if false;
+    // Users can only read and write to their own data. This is secure.
+    match /users/{userId}/{document=**} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
     }
   }
 }
