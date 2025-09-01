@@ -28,7 +28,7 @@ const AnimatedSection = ({ children, className, id }: { children: React.ReactNod
 };
 
 const FeatureCard = ({ icon: Icon, title, description }: { icon: React.ElementType, title: string, description: string }) => (
-    <div className="text-left p-8 rounded-2xl h-full flex flex-col transition-all duration-300 bg-card/5 backdrop-blur-sm border border-white/10 hover:bg-card/10 hover:border-white/20">
+    <div className="text-left p-8 rounded-2xl h-full flex flex-col transition-all duration-300 bg-card/5 backdrop-blur-sm border border-white/10 hover:bg-card/10 hover:border-white/20 hover:shadow-[0_0_20px_theme(colors.primary/0.3)]">
         <div className="bg-primary/10 p-3 rounded-full w-fit">
             <Icon className="h-6 w-6 text-primary" />
         </div>
@@ -118,31 +118,31 @@ const LandingPage = () => {
             <div className="container text-center px-4">
                 <AnimatedSection>
                   <h1 className="text-5xl md:text-8xl font-black tracking-tighter bg-clip-text text-transparent bg-gradient-to-b from-white to-white/70">
-                    Get Early Access to Zenvue.
+                    Your Feed. Your Rules.
                   </h1>
                 </AnimatedSection>
                 <AnimatedSection>
-                  <h2 className="text-5xl md:text-8xl font-black tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-primary via-purple-500 to-pink-500 mt-2">
-                    Experience Revolutionary Ad Control.
+                  <h2 className="text-5xl md:text-8xl font-black tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-primary via-fuchsia-500 to-pink-500 mt-2">
+                    Experience Zenvue.
                   </h2>
                 </AnimatedSection>
                 <AnimatedSection>
                   <p className="mt-6 max-w-2xl mx-auto text-lg text-muted-foreground">
-                    Zenvue transforms your ad experience. See your ad history, turn ads into affiliate products, and earn commissions—all in one place.
+                    Stop scrolling past good ads. Zenvue lets you save, track, and even earn from the ads you see.
                   </p>
                   <div className="mt-8 max-w-lg mx-auto">
                     <form className="flex flex-col sm:flex-row gap-2">
                       <Input 
                         type="email" 
-                        placeholder="Enter your email address" 
-                        className="h-12 text-base flex-1 bg-white/10 border-white/20 placeholder:text-white/60 focus-visible:ring-white" 
+                        placeholder="Enter your email" 
+                        className="h-12 text-base flex-1 bg-white/5 border-white/20 placeholder:text-white/60 focus-visible:ring-primary focus-visible:ring-offset-0 focus-visible:border-primary" 
                         aria-label="Email for early access"
                       />
-                      <Button size="lg" type="submit" className="h-12 text-base bg-white text-black hover:bg-gray-200">
+                      <Button size="lg" type="submit" className="h-12 text-base bg-primary hover:bg-primary/90 text-primary-foreground font-bold shadow-[0_0_20px_theme(colors.primary/0.4)]">
                         Get Early Access
                       </Button>
                     </form>
-                    <p className="text-xs text-muted-foreground mt-2">No spam, just exclusive updates.</p>
+                    <p className="text-xs text-muted-foreground mt-2">No spam. Only exclusive updates.</p>
                   </div>
                 </AnimatedSection>
             </div>
@@ -233,5 +233,3 @@ const LandingPage = () => {
 };
 
 export default LandingPage;
-
-    
