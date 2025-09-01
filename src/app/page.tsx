@@ -7,66 +7,45 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowRight, CheckCircle, Handshake, History, BarChart, ShieldCheck } from 'lucide-react';
+import { useScrollAnimation } from '@/hooks/use-scroll-animation';
+import { Logo } from '@/components/layout/Logo';
+
+const AnimatedSection = ({ children, className }: { children: React.ReactNode, className?: string }) => {
+  const { ref, inView } = useScrollAnimation();
+  return (
+    <section
+      ref={ref}
+      className={`transition-all duration-1000 ease-out ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'} ${className}`}
+    >
+      {children}
+    </section>
+  );
+};
 
 const FeatureCard = ({ icon: Icon, title, description }: { icon: React.ElementType, title: string, description: string }) => (
-  <Card className="text-center shadow-lg hover:shadow-xl transition-shadow duration-300">
+  <Card className="text-center shadow-lg hover:shadow-xl transition-shadow duration-300 h-full flex flex-col">
     <CardHeader>
       <div className="mx-auto bg-primary/10 p-4 rounded-full w-fit">
         <Icon className="h-8 w-8 text-primary" />
       </div>
       <CardTitle className="mt-4">{title}</CardTitle>
     </CardHeader>
-    <CardContent>
+    <CardContent className="flex-grow">
       <p className="text-muted-foreground">{description}</p>
     </CardContent>
   </Card>
 );
 
-
 export default function LandingPage() {
   return (
-    <div className="flex flex-col min-h-screen bg-background">
+    <div className="flex flex-col min-h-screen bg-background text-foreground">
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-16 items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
-            <svg
-              className="size-7"
-              viewBox="0 0 100 100"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              aria-label="Zenvue Logo"
-            >
-              <defs>
-                <linearGradient
-                  id="logoGradient"
-                  x1="0"
-                  y1="0"
-                  x2="100"
-                  y2="100"
-                  gradientUnits="userSpaceOnUse"
-                >
-                  <stop stopColor="hsl(var(--primary))" />
-                  <stop offset="1" stopColor="hsl(var(--primary) / 0.5)" />
-                </linearGradient>
-              </defs>
-              <path
-                d="M20 20 L40 80 L60 20"
-                stroke="url(#logoGradient)"
-                strokeWidth="12"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M50 80 L80 20"
-                stroke="url(#logoGradient)"
-                strokeWidth="12"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+            <Logo className="size-7" />
             <span className="text-xl font-bold">Zenvue</span>
           </Link>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
              <Link href="/dashboard">
                 <Button variant="ghost">Sign In</Button>
             </Link>
@@ -77,14 +56,14 @@ export default function LandingPage() {
         </div>
       </header>
 
-      <main className="flex-1">
+      <main className="flex-1 overflow-x-hidden">
         {/* Hero Section */}
-        <section className="py-20 md:py-32">
+        <section className="py-24 md:py-40">
           <div className="container text-center">
-            <h1 className="text-4xl md:text-6xl font-bold tracking-tighter">
+            <h1 className="text-5xl md:text-7xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-b from-foreground to-foreground/70">
               Take Control of Your Ads.
               <br />
-              <span className="text-primary">Convert Views into Earnings.</span>
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-500">Convert Views into Earnings.</span>
             </h1>
             <p className="mt-6 max-w-2xl mx-auto text-lg text-muted-foreground">
               Zenvue transforms your ad experience. See your ad history, turn ads into affiliate products, and earn commissions—all in one place.
@@ -97,28 +76,27 @@ export default function LandingPage() {
         </section>
 
         {/* Product Mockup Section */}
-        <section className="pb-20 md:pb-32">
+        <AnimatedSection className="pb-24 md:pb-40">
             <div className="container">
-                <div className="relative rounded-xl shadow-2xl overflow-hidden">
+                <div className="relative rounded-xl shadow-2xl overflow-hidden aspect-video">
                     <Image
-                        src="https://picsum.photos/1200/600"
+                        src="https://picsum.photos/1200/675"
                         alt="Zenvue dashboard mockup"
-                        width={1200}
-                        height={600}
+                        fill
                         data-ai-hint="dashboard product"
-                        className="w-full"
+                        className="object-cover"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent" />
                 </div>
             </div>
-        </section>
+        </AnimatedSection>
 
         {/* Core Value Propositions Section */}
-        <section className="py-20 md:py-24 bg-muted/50">
+        <AnimatedSection className="py-24 md:py-32 bg-muted/50">
           <div className="container">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold">A Revolutionary Ad Experience</h2>
-              <p className="mt-4 max-w-2xl mx-auto text-muted-foreground">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl md:text-5xl font-bold">A Revolutionary Ad Experience</h2>
+              <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
                 We put you in the driver's seat. No more passive consumption.
               </p>
             </div>
@@ -140,92 +118,90 @@ export default function LandingPage() {
               />
             </div>
           </div>
-        </section>
+        </AnimatedSection>
 
         {/* How It Works Section */}
-        <section className="py-20 md:py-24">
+        <AnimatedSection className="py-24 md:py-32">
             <div className="container">
                 <div className="grid md:grid-cols-2 gap-16 items-center">
                     <div>
-                        <h2 className="text-3xl md:text-4xl font-bold">Simple, Powerful, and Yours</h2>
-                        <p className="mt-4 text-muted-foreground">From viewing to earning in just a few clicks. Our streamlined process makes affiliate marketing accessible to everyone.</p>
+                        <h2 className="text-4xl md:text-5xl font-bold">Simple, Powerful, and Yours</h2>
+                        <p className="mt-4 text-lg text-muted-foreground">From viewing to earning in just a few clicks. Our streamlined process makes affiliate marketing accessible to everyone.</p>
                         <ul className="mt-8 space-y-6">
                             <li className="flex items-start gap-4">
                                 <CheckCircle className="h-6 w-6 text-primary mt-1 flex-shrink-0" />
                                 <div>
-                                    <h3 className="font-semibold">See an Ad, Save an Ad</h3>
+                                    <h3 className="font-semibold text-lg">See an Ad, Save an Ad</h3>
                                     <p className="text-muted-foreground">Every ad you encounter is automatically saved to your private, chronological history.</p>
                                 </div>
                             </li>
                              <li className="flex items-start gap-4">
                                 <CheckCircle className="h-6 w-6 text-primary mt-1 flex-shrink-0" />
                                 <div>
-                                    <h3 className="font-semibold">Convert to Earn</h3>
+                                    <h3 className="font-semibold text-lg">Convert to Earn</h3>
                                     <p className="text-muted-foreground">With one click, turn an interesting ad into an affiliate product in your personal collection.</p>
                                 </div>
                             </li>
                              <li className="flex items-start gap-4">
                                 <CheckCircle className="h-6 w-6 text-primary mt-1 flex-shrink-0" />
                                 <div>
-                                    <h3 className="font-semibold">Manage & Track</h3>
+                                    <h3 className="font-semibold text-lg">Manage & Track</h3>
                                     <p className="text-muted-foreground">Add products to your cart and monitor your potential earnings through our intuitive dashboard.</p>
                                 </div>
                             </li>
                         </ul>
                     </div>
-                    <div>
+                    <div className="relative aspect-square">
                          <Image
-                            src="https://picsum.photos/600/500"
+                            src="https://picsum.photos/600/600"
                             alt="Ad history view"
-                            width={600}
-                            height={500}
+                           fill
                             data-ai-hint="user interface"
-                            className="rounded-xl shadow-2xl"
+                            className="object-cover rounded-xl shadow-2xl"
                         />
                     </div>
                 </div>
             </div>
-        </section>
+        </AnimatedSection>
 
          {/* Trust & Transparency Section */}
-        <section className="py-20 md:py-24 bg-muted/50">
+        <AnimatedSection className="py-24 md:py-32 bg-muted/50">
           <div className="container">
             <div className="grid md:grid-cols-2 gap-16 items-center">
-                <div>
+                <div className="relative aspect-[4/3]">
                      <Image
-                        src="https://picsum.photos/600/400"
+                        src="https://picsum.photos/600/450"
                         alt="Data privacy visualization"
-                        width={600}
-                        height={400}
+                        fill
                         data-ai-hint="privacy security"
-                        className="rounded-xl shadow-2xl"
+                        className="object-cover rounded-xl shadow-2xl"
                     />
                 </div>
                 <div>
-                    <div className="flex items-center gap-2">
-                        <ShieldCheck className="h-6 w-6 text-primary" />
-                        <h2 className="text-3xl md:text-4xl font-bold">Your Data, Your Rules</h2>
+                    <div className="flex items-center gap-3">
+                        <ShieldCheck className="h-8 w-8 text-primary" />
+                        <h2 className="text-4xl md:text-5xl font-bold">Your Data, Your Rules</h2>
                     </div>
-                    <p className="mt-4 text-muted-foreground">
+                    <p className="mt-4 text-lg text-muted-foreground">
                         We believe in privacy-first. Your ad history is yours alone, stored securely. We provide the tools; you control the data and the earnings.
                     </p>
                     <div className="mt-8 space-y-4">
                         <div className="flex items-center gap-3">
                             <BarChart className="h-5 w-5 text-muted-foreground" />
-                            <span className="font-medium">Transparent Revenue Sharing</span>
+                            <span className="font-medium text-lg">Transparent Revenue Sharing</span>
                         </div>
                         <div className="flex items-center gap-3">
                             <ShieldCheck className="h-5 w-5 text-muted-foreground" />
-                            <span className="font-medium">Secure Anonymous Accounts</span>
+                            <span className="font-medium text-lg">Secure Anonymous Accounts</span>
                         </div>
                     </div>
                 </div>
             </div>
           </div>
-        </section>
+        </AnimatedSection>
       </main>
 
-      <footer className="border-t">
+      <footer className="border-t bg-background">
         <div className="container py-8 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-sm text-muted-foreground">&copy; {new Date().getFullYear()} Zenvue. All rights reserved.</p>
           <div className="flex items-center gap-6 text-sm">
