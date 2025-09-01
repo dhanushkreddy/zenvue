@@ -94,22 +94,24 @@ const EarlyAccessForm = () => {
   }, [state.success]);
 
   return (
-    <form ref={formRef} action={formAction} className="flex flex-col sm:flex-row gap-2">
-      <Input
-        type="email"
-        name="email"
-        placeholder="Enter your email"
-        className="h-12 text-base flex-1 rounded-full bg-white/10 border-black/50 placeholder:text-white/70 focus-visible:ring-primary focus-visible:ring-offset-0 focus-visible:outline-none focus-visible:border-black"
-        aria-label="Email for early access"
-        required
-      />
-      <Button size="lg" type="submit" className="h-12 text-base rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold shadow-[0_0_20px_theme(colors.primary/0.4)] animate-pulse hover:animate-none" disabled={pending}>
-        {pending ? 'Joining...' : 'Get Early Access'}
-      </Button>
+    <div className="flex flex-col gap-2">
+      <form ref={formRef} action={formAction} className="flex flex-col sm:flex-row gap-2">
+        <Input
+          type="email"
+          name="email"
+          placeholder="Enter your email"
+          className="h-12 text-base flex-1 rounded-full bg-white/10 border-black/50 placeholder:text-white/70 focus-visible:ring-primary focus-visible:ring-offset-0 focus-visible:outline-none focus-visible:border-black"
+          aria-label="Email for early access"
+          required
+        />
+        <Button size="lg" type="submit" className="h-12 text-base rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold shadow-[0_0_20px_theme(colors.primary/0.4)] animate-pulse hover:animate-none" disabled={pending}>
+          {pending ? 'Joining...' : 'Get Early Access'}
+        </Button>
+      </form>
       {state.message && (
-        <p className={`text-sm mt-2 ${state.success ? 'text-green-400' : 'text-red-400'}`}>{state.message}</p>
+        <p className={`text-sm mt-2 text-center ${state.success ? 'text-green-400' : 'text-red-400'}`}>{state.message}</p>
       )}
-    </form>
+    </div>
   )
 }
 
@@ -250,5 +252,3 @@ const LandingPage = () => {
 };
 
 export default LandingPage;
-
-    
