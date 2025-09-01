@@ -2,11 +2,10 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Allow anyone to submit their email for early access
-    // but not read, update, or delete any entries.
-    match /earlyAccessUsers/{userId} {
-      allow read, update, delete: if false;
+    match /earlyAccessUsers/{docId} {
       allow create: if true;
+      allow get, list: if true;
+      allow update, delete: if false;
     }
   }
 }
