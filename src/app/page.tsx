@@ -10,8 +10,17 @@ import { cn } from '@/lib/utils';
 import { useEffect, useRef, useState } from 'react';
 import { Input } from '@/components/ui/input';
 
-const AnimatedSection = ({ children, className, id }: { children: React.ReactNode, className?: string, id?: string }) => {
-  const { ref, inView } = useScrollAnimation();
+const AnimatedSection = ({ children, className, id, innerRef }: { children: React.ReactNode, className?: string, id?: string, innerRef?: React.RefObject<HTMLDivElement> }) => {
+  const { ref: internalRef, inView } = useScrollAnimation();
+  const ref = innerRef || internalRef;
+  
+  // A bit of a hack to combine refs if needed, but for now this works
+  useEffect(() => {
+    if (innerRef) {
+      (innerRef as React.MutableRefObject<HTMLDivElement | null>).current = (ref as React.MutableRefObject<HTMLDivElement | null>).current;
+    }
+  }, [innerRef, ref]);
+
   return (
     <section
       ref={ref}
@@ -26,6 +35,7 @@ const AnimatedSection = ({ children, className, id }: { children: React.ReactNod
     </section>
   );
 };
+
 
 const Sticker = ({ children, className }: { children: React.ReactNode, className?: string }) => (
   <div className={cn(
@@ -46,6 +56,36 @@ const FeatureCard = ({ icon: Icon, title, description, sticker, stickerClassName
         <p className="mt-2 text-muted-foreground flex-grow">{description}</p>
     </div>
 );
+
+const Counter = ({ to }: { to: number }) => {
+  const [count, setCount] = useState(0);
+  const { ref, inView } = useScrollAnimation();
+
+  useEffect(() => {
+    if (inView) {
+      const duration = 1500; // ms
+      const frameRate = 1000 / 60; // 60fps
+      const totalFrames = Math.round(duration / frameRate);
+      let frame = 0;
+
+      const counter = setInterval(() => {
+        frame++;
+        const progress = frame / totalFrames;
+        setCount(Math.round(to * progress));
+
+        if (frame === totalFrames) {
+          clearInterval(counter);
+           setCount(to); // Ensure it ends on the exact number
+        }
+      }, frameRate);
+
+      return () => clearInterval(counter);
+    }
+  }, [inView, to]);
+
+  return <span ref={ref}>{count.toLocaleString()}+</span>;
+}
+
 
 const LandingPage = () => {
   const [activeSection, setActiveSection] = useState('hero');
@@ -149,7 +189,7 @@ const LandingPage = () => {
                       <Input
                         type="email"
                         placeholder="Enter your email"
-                        className="h-12 text-base flex-1 rounded-full bg-white/10 border border-black/50 placeholder:text-white/70 focus-visible:ring-primary focus-visible:ring-offset-0 focus-visible:outline-none focus-visible:border-primary"
+                        className="h-12 text-base flex-1 rounded-full bg-white/10 border-black/50 placeholder:text-white/70 focus-visible:ring-primary focus-visible:ring-offset-0 focus-visible:outline-none focus-visible:border-primary border"
                         aria-label="Email for early access"
                       />
                       <Button size="lg" type="submit" className="h-12 text-base rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold shadow-[0_0_20px_theme(colors.primary/0.4)] animate-pulse hover:animate-none">
@@ -202,7 +242,7 @@ const LandingPage = () => {
         <AnimatedSection className="py-24 md:py-32 border-y">
             <div className="container px-4">
                  <div className="text-center mb-16 max-w-3xl mx-auto">
-                    <h2 className="text-4xl md:text-6xl font-bold">Join 5,000+ Early Adopters</h2>
+                    <h2 className="text-4xl md:text-6xl font-bold">Join <Counter to={5000} /> Early Adopters</h2>
                     <p className="mt-4 text-lg text-muted-foreground">
                         Be part of the community shaping the future of online advertising.
                     </p>
