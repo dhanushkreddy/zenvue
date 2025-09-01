@@ -76,7 +76,7 @@ const Counter = ({ to }: { to: number }) => {
     }
   }, [to]);
 
-  return <span ref={ref}>{count.toLocaleString()}+</span>;
+  return <span ref={ref} className="font-sans" style={{ fontVariantNumeric: 'tabular-nums' }}>{count.toLocaleString()}+</span>;
 }
 
 
