@@ -142,7 +142,7 @@ const LandingPage = () => {
             <section className="py-24 md:py-32 border-y">
                 <div className="container px-4">
                      <div className="text-center mb-16 max-w-3xl mx-auto">
-                        <h2 className="text-4xl md:text-6xl font-bold">Join <Counter to={5000} /> Early Adopters</h2>
+                        <h2 className="text-4xl md:text-6xl font-bold whitespace-nowrap">Join <Counter to={5000} /> Early Adopters</h2>
                         <p className="mt-4 text-lg text-muted-foreground">
                             Be part of the community shaping the future of online advertising.
                         </p>
