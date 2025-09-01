@@ -1,7 +1,5 @@
-
 'use client';
 
-import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, CheckCircle, Handshake, History } from 'lucide-react';
@@ -122,12 +120,12 @@ const LandingPage = () => {
             <div className="container text-center px-4">
                 <AnimatedSection>
                   <h1 className="text-5xl md:text-8xl font-black tracking-tighter bg-clip-text text-transparent bg-gradient-to-b from-white to-white/70">
-                    Own Your Feed.
+                    Get Early Access to Zenvue.
                   </h1>
                 </AnimatedSection>
                 <AnimatedSection>
                   <h2 className="text-5xl md:text-8xl font-black tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-primary via-purple-500 to-pink-500 mt-2">
-                    Earn Your Share.
+                    Experience Revolutionary Ad Control.
                   </h2>
                 </AnimatedSection>
                 <AnimatedSection>
@@ -177,7 +175,7 @@ const LandingPage = () => {
         </div>
       </main>
 
-      <main className="relative z-10 bg-background">
+       <main className="relative z-10 bg-background">
         {/* Social Proof Section */}
         <AnimatedSection className="py-24 md:py-32 border-y">
             <div className="container px-4">
@@ -203,52 +201,8 @@ const LandingPage = () => {
                 </div>
             </div>
         </AnimatedSection>
-        
-        {/* See It In Action Section */}
-        <AnimatedSection className="py-24 md:py-32">
-          <div className="container px-4">
-            <div className="text-center mb-16 max-w-3xl mx-auto">
-              <h2 className="text-4xl md:text-6xl font-bold">How It Works</h2>
-              <p className="mt-4 text-lg text-muted-foreground">
-                From your feed to your wallet, in a few simple steps.
-              </p>
-            </div>
-            
-            {/* Step 1: Ad History */}
-            <div className="grid md:grid-cols-2 gap-16 items-center mb-24">
-              <div className="text-left">
-                <h3 className="text-3xl font-bold">1. View Your Ad History</h3>
-                <p className="mt-4 text-muted-foreground">Every ad you encounter is automatically saved to your private history. Search, filter, and rediscover products you were interested in at any time.</p>
-              </div>
-              <div className="rounded-xl overflow-hidden border-2 border-border shadow-2xl aspect-video">
-                <Image src="https://picsum.photos/800/600" alt="Ad History UI" width={800} height={600} data-ai-hint="ad history interface" className="w-full h-full object-cover" />
-              </div>
-            </div>
-
-            {/* Step 2: Convert to Affiliate */}
-            <div className="grid md:grid-cols-2 gap-16 items-center mb-24">
-               <div className="rounded-xl overflow-hidden border-2 border-border shadow-2xl md:order-last aspect-video">
-                <Image src="https://picsum.photos/800/600" alt="Affiliate Conversion UI" width={800} height={600} data-ai-hint="product conversion button" className="w-full h-full object-cover" />
-              </div>
-              <div className="text-left">
-                <h3 className="text-3xl font-bold">2. Convert and Earn</h3>
-                <p className="mt-4 text-muted-foreground">With a single click, transform any ad into an affiliate product. You'll earn a commission whenever a purchase is made through your converted link.</p>
-              </div>
-            </div>
-
-            {/* Step 3: Rate and Personalize */}
-            <div className="grid md:grid-cols-2 gap-16 items-center">
-              <div className="text-left">
-                <h3 className="text-3xl font-bold">3. Rate and Personalize</h3>
-                <p className="mt-4 text-muted-foreground">Like or dislike ads to tailor your experience. Your feedback helps us show you more of what you love and less of what you don't.</p>
-              </div>
-              <div className="rounded-xl overflow-hidden border-2 border-border shadow-2xl aspect-video">
-                <Image src="https://picsum.photos/800/600" alt="Ad Rating UI" width={800} height={600} data-ai-hint="like dislike buttons" className="w-full h-full object-cover" />
-              </div>
-            </div>
-          </div>
-        </AnimatedSection>
       </main>
+
 
       <footer className="relative z-10 bg-background/95 border-t border-border">
         <div className="container mx-auto py-12 px-4">
@@ -270,6 +224,6 @@ const LandingPage = () => {
       </footer>
     </div>
   );
-}
+};
 
 export default LandingPage;
