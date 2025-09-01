@@ -7,24 +7,15 @@ import { CheckCircle, Handshake, History } from 'lucide-react';
 import { useScrollAnimation } from '@/hooks/use-scroll-animation';
 import { Logo } from '@/components/layout/Logo';
 import { cn } from '@/lib/utils';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Input } from '@/components/ui/input';
 
-const AnimatedSection = ({ children, className, id, innerRef }: { children: React.ReactNode, className?: string, id?: string, innerRef?: React.RefObject<HTMLDivElement> }) => {
-  const { ref: internalRef, inView } = useScrollAnimation();
-  const ref = innerRef || internalRef;
+const AnimatedSection = ({ children, className }: { children: React.ReactNode, className?: string }) => {
+  const { ref, inView } = useScrollAnimation();
   
-  // A bit of a hack to combine refs if needed, but for now this works
-  useEffect(() => {
-    if (innerRef) {
-      (innerRef as React.MutableRefObject<HTMLDivElement | null>).current = (ref as React.MutableRefObject<HTMLDivElement | null>).current;
-    }
-  }, [innerRef, ref]);
-
   return (
     <section
       ref={ref}
-      id={id}
       className={cn(
         "transition-all duration-1000 ease-out",
         inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10",
@@ -88,40 +79,6 @@ const Counter = ({ to }: { to: number }) => {
 
 
 const LandingPage = () => {
-  const [activeSection, setActiveSection] = useState('hero');
-  const heroRef = useRef<HTMLDivElement>(null);
-  const valuePropsRef = useRef<HTMLDivElement>(null);
-  const socialProofRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const observerOptions = {
-      root: null,
-      rootMargin: '0px',
-      threshold: 0.5,
-    };
-
-    const observerCallback = (entries: IntersectionObserverEntry[]) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          setActiveSection(entry.target.id);
-        }
-      });
-    };
-
-    const observer = new IntersectionObserver(observerCallback, observerOptions);
-
-    const refs = [heroRef, valuePropsRef, socialProofRef];
-    refs.forEach(ref => {
-      if (ref.current) observer.observe(ref.current);
-    });
-
-    return () => {
-      refs.forEach(ref => {
-        if (ref.current) observer.unobserve(ref.current);
-      });
-    };
-  }, []);
-
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
       <header className="fixed top-0 z-50 w-full bg-background/30 backdrop-blur-lg border-b border-white/10">
@@ -134,7 +91,7 @@ const LandingPage = () => {
       </header>
 
       <main className="flex-1">
-        {/* Fixed Background Videos */}
+        {/* Fixed Background Video */}
         <div className="fixed inset-0 z-0">
            <video
             src="https://videos.coverr.co/video/coverr-a-person-in-a-dark-room-uses-a-laptop-and-a-smartphone-3023/1080p.mp4"
@@ -142,21 +99,7 @@ const LandingPage = () => {
             loop
             muted
             playsInline
-            className={cn(
-              "object-cover w-full h-full absolute inset-0 transition-opacity duration-1000",
-              (activeSection === 'hero' || activeSection === 'social-proof') ? 'opacity-20' : 'opacity-0'
-            )}
-          />
-           <video
-            src="https://videos.coverr.co/video/coverr-a-man-working-on-his-laptop-in-a-modern-office-space-2621/1080p.mp4"
-            autoPlay
-            loop
-            muted
-            playsInline
-            className={cn(
-              "object-cover w-full h-full absolute inset-0 transition-opacity duration-1000",
-              activeSection === 'value-props' ? 'opacity-20' : 'opacity-0'
-            )}
+            className="object-cover w-full h-full absolute inset-0 opacity-20"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent"></div>
         </div>
@@ -164,7 +107,7 @@ const LandingPage = () => {
         {/* Scrollable Content */}
         <div className="relative z-10">
           {/* Hero Section */}
-          <section ref={heroRef} id="hero" className="flex h-screen min-h-[700px] items-center justify-center pt-20">
+          <section className="flex h-screen min-h-[700px] items-center justify-center pt-20">
             <div className="container text-center px-4 relative">
                 <AnimatedSection>
                   <h1 className="text-5xl md:text-8xl font-black tracking-tighter bg-clip-text text-transparent bg-gradient-to-b from-white to-white/70">
@@ -204,7 +147,7 @@ const LandingPage = () => {
 
           <main className="relative z-10 bg-background">
             {/* Social Proof Section */}
-            <AnimatedSection id="social-proof" innerRef={socialProofRef} className="py-24 md:py-32 border-y">
+            <AnimatedSection className="py-24 md:py-32 border-y">
                 <div className="container px-4">
                      <div className="text-center mb-16 max-w-3xl mx-auto">
                         <h2 className="text-4xl md:text-6xl font-bold">Join <Counter to={5000} /> Early Adopters</h2>
@@ -228,10 +171,8 @@ const LandingPage = () => {
                     </div>
                 </div>
             </AnimatedSection>
-          </main>
-
-          {/* Core Value Propositions Section */}
-          <div id="value-props" ref={valuePropsRef}>
+            
+            {/* Core Value Propositions Section */}
             <AnimatedSection className="py-24 md:py-32">
                 <div className="container px-4">
                     <div className="text-center mb-16 max-w-3xl mx-auto">
@@ -261,7 +202,8 @@ const LandingPage = () => {
                     </div>
                 </div>
             </AnimatedSection>
-          </div>
+          </main>
+
         </div>
       </main>
 
