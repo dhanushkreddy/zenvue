@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, CheckCircle, Handshake, History, BarChart, ShieldCheck } from 'lucide-react';
+import { ArrowRight, CheckCircle, Handshake, History } from 'lucide-react';
 import { useScrollAnimation } from '@/hooks/use-scroll-animation';
 import { Logo } from '@/components/layout/Logo';
 import { cn } from '@/lib/utils';
@@ -25,7 +25,7 @@ const AnimatedSection = ({ children, className }: { children: React.ReactNode, c
 };
 
 const FeatureCard = ({ icon: Icon, title, description }: { icon: React.ElementType, title: string, description: string }) => (
-    <div className="text-left p-8 rounded-2xl h-full flex flex-col transition-all duration-300">
+    <div className="text-left p-8 rounded-2xl h-full flex flex-col transition-all duration-300 bg-card/5 backdrop-blur-sm border border-white/10 hover:bg-card/10">
         <div className="bg-primary/10 p-3 rounded-full w-fit">
             <Icon className="h-6 w-6 text-primary" />
         </div>
@@ -37,7 +37,7 @@ const FeatureCard = ({ icon: Icon, title, description }: { icon: React.ElementTy
 const LandingPage = () => {
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
-      <header className="fixed top-0 z-50 w-full bg-background/80 backdrop-blur-sm">
+      <header className="fixed top-0 z-50 w-full bg-transparent">
         <div className="container mx-auto flex h-20 items-center justify-between px-4">
           <Link href="/" className="flex items-center gap-2">
             <Logo className="size-8" />
@@ -45,10 +45,10 @@ const LandingPage = () => {
           </Link>
           <div className="flex items-center gap-2">
              <Link href="/dashboard">
-                <Button variant="ghost">Sign In</Button>
+                <Button variant="ghost" className="text-white hover:bg-white/10 hover:text-white">Sign In</Button>
             </Link>
             <Link href="/dashboard">
-              <Button>Get Started <ArrowRight className="ml-2 h-4 w-4" /></Button>
+              <Button className="bg-white text-black hover:bg-gray-200">Get Started <ArrowRight className="ml-2 h-4 w-4" /></Button>
             </Link>
           </div>
         </div>
@@ -63,9 +63,9 @@ const LandingPage = () => {
             loop
             muted
             playsInline
-            className="object-cover w-full h-full opacity-10"
+            className="object-cover w-full h-full opacity-20"
           />
-          <div className="absolute inset-0 bg-background/80"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent"></div>
         </div>
 
         {/* Scrollable Content */}
@@ -84,7 +84,7 @@ const LandingPage = () => {
                 </p>
                 <div className="mt-8">
                   <Link href="/dashboard">
-                    <Button size="lg" className="h-12 text-base">Get Early Access</Button>
+                    <Button size="lg" className="h-12 text-base bg-white text-black hover:bg-gray-200">Get Early Access</Button>
                   </Link>
                 </div>
             </div>
@@ -118,10 +118,33 @@ const LandingPage = () => {
                   </div>
               </div>
           </AnimatedSection>
+
+           {/* Video cards section */}
+          <AnimatedSection className="py-24 md:py-32">
+            <div className="container px-4">
+              <div className="text-center mb-16 max-w-3xl mx-auto">
+                <h2 className="text-4xl md:text-6xl font-bold">See It In Action</h2>
+                <p className="mt-4 text-lg text-muted-foreground">
+                  From your feed to your wallet.
+                </p>
+              </div>
+              <div className="grid md:grid-cols-3 gap-8">
+                <div className="rounded-xl overflow-hidden border border-white/10 shadow-2xl">
+                  <video src="https://www.w3schools.com/html/mov_bbb.mp4" autoPlay loop muted playsInline className="w-full h-full object-cover" />
+                </div>
+                <div className="rounded-xl overflow-hidden border border-white/10 shadow-2xl">
+                  <video src="https://www.w3schools.com/html/mov_bbb.mp4" autoPlay loop muted playsInline className="w-full h-full object-cover" />
+                </div>
+                <div className="rounded-xl overflow-hidden border border-white/10 shadow-2xl">
+                  <video src="https://www.w3schools.com/html/mov_bbb.mp4" autoPlay loop muted playsInline className="w-full h-full object-cover" />
+                </div>
+              </div>
+            </div>
+          </AnimatedSection>
         </div>
       </main>
 
-      <footer className="relative z-10 bg-background/80 backdrop-blur-sm">
+      <footer className="relative z-10 bg-background">
         <div className="container mx-auto py-12 px-4">
             <div className="flex flex-col md:flex-row items-center justify-between gap-8">
                 <div className="flex items-center gap-2">
