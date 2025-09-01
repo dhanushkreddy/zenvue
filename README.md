@@ -1,6 +1,6 @@
 # Zenvue - Your Feed, Your Rules
 
-**Our Vision:** Zenvue is pioneering a new advertising paradigm centered on user choice and empowerment. We are building the essential bridge between discovery and purchase, creating a win-win ecosystem where consumers control their feed, brands connect with engaged audiences, and value is shared equitably.
+Zenvue empowers consumers to take control of their advertising experience, connecting brands with engaged audiences through personalized, user-driven ad discovery that creates shared value for all.
 
 ---
 
