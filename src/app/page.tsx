@@ -102,7 +102,7 @@ const LandingPage = () => {
             )}
           />
            <video
-            src="https://www.w3schools.com/videos/video.mp4"
+            src="https://videos.coverr.co/video/coverr-a-person-in-a-dark-room-uses-a-laptop-and-a-smartphone-3023/1080p.mp4"
             autoPlay
             loop
             muted
