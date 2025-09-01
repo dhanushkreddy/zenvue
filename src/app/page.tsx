@@ -21,30 +21,30 @@ const AnimatedSection = ({ children, className }: { children: React.ReactNode, c
 };
 
 const FeatureCard = ({ icon: Icon, title, description }: { icon: React.ElementType, title: string, description: string }) => (
-    <div className="text-center bg-white/10 backdrop-blur-lg p-8 rounded-2xl shadow-2xl border border-white/20 h-full flex flex-col">
-        <div className="mx-auto bg-white/20 p-4 rounded-full w-fit">
-            <Icon className="h-8 w-8 text-white" />
+    <div className="text-left bg-secondary/50 p-8 rounded-2xl shadow-lg h-full flex flex-col transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
+        <div className="bg-primary/10 p-3 rounded-full w-fit">
+            <Icon className="h-6 w-6 text-primary" />
         </div>
-        <h3 className="mt-6 text-2xl font-bold text-white">{title}</h3>
-        <p className="mt-2 text-white/80 flex-grow">{description}</p>
+        <h3 className="mt-6 text-2xl font-bold">{title}</h3>
+        <p className="mt-2 text-muted-foreground flex-grow">{description}</p>
     </div>
 );
 
 export default function LandingPage() {
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
-      <header className="fixed top-0 z-50 w-full">
+      <header className="fixed top-0 z-50 w-full bg-background/80 backdrop-blur-sm">
         <div className="container mx-auto flex h-20 items-center justify-between px-4">
           <Link href="/" className="flex items-center gap-2">
-            <Logo className="size-8 text-white" />
-            <span className="text-2xl font-bold text-white">Zenvue</span>
+            <Logo className="size-8" />
+            <span className="text-2xl font-bold">Zenvue</span>
           </Link>
           <div className="flex items-center gap-2">
              <Link href="/dashboard">
-                <Button variant="ghost" className="text-white hover:bg-white/10 hover:text-white">Sign In</Button>
+                <Button variant="ghost">Sign In</Button>
             </Link>
             <Link href="/dashboard">
-              <Button className="bg-white text-black hover:bg-white/90">Get Started <ArrowRight className="ml-2 h-4 w-4" /></Button>
+              <Button>Get Started <ArrowRight className="ml-2 h-4 w-4" /></Button>
             </Link>
           </div>
         </div>
@@ -52,46 +52,31 @@ export default function LandingPage() {
 
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="relative flex h-screen min-h-[700px] items-center justify-center">
-            <Image 
-                src="https://picsum.photos/1920/1080"
-                alt="Abstract background"
-                fill
-                data-ai-hint="abstract gradient"
-                className="object-cover"
-            />
-            <div className="absolute inset-0 bg-black/50" />
+        <section className="relative flex h-screen min-h-[700px] items-center justify-center pt-20">
+            <div className="absolute inset-0 bg-grid-pattern opacity-10" />
             <div className="relative container text-center px-4">
-                <h1 className="text-5xl md:text-8xl font-black text-white tracking-tighter">
+                <h1 className="text-5xl md:text-8xl font-black tracking-tighter">
                 Take Control of Your Ads.
                 </h1>
-                <h2 className="text-5xl md:text-8xl font-black tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500 mt-2">
+                <h2 className="text-5xl md:text-8xl font-black tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-600 mt-2">
                 Convert Views to Earnings.
                 </h2>
-                <p className="mt-6 max-w-2xl mx-auto text-lg text-white/80">
+                <p className="mt-6 max-w-2xl mx-auto text-lg text-muted-foreground">
                 Zenvue transforms your ad experience. See your ad history, turn ads into affiliate products, and earn commissions—all in one place.
                 </p>
                 <div className="mt-8 max-w-md mx-auto flex items-center gap-2">
-                <Input type="email" placeholder="Enter your email" className="h-12 text-base bg-white/20 text-white placeholder:text-white/60 border-white/30 focus:ring-white" />
-                <Button size="lg" className="h-12 bg-white text-black hover:bg-white/90">Get Early Access</Button>
+                <Input type="email" placeholder="Enter your email" className="h-12 text-base" />
+                <Button size="lg" className="h-12">Get Early Access</Button>
                 </div>
             </div>
         </section>
 
         {/* Core Value Propositions Section */}
-        <AnimatedSection className="relative py-24 md:py-32">
-            <Image 
-                src="https://picsum.photos/1920/1080?grayscale"
-                alt="Dark abstract background"
-                fill
-                data-ai-hint="dark abstract"
-                className="object-cover"
-            />
-            <div className="absolute inset-0 bg-black/70" />
-            <div className="relative container px-4">
+        <AnimatedSection className="py-24 md:py-32">
+            <div className="container px-4">
                 <div className="text-center mb-16">
-                    <h2 className="text-4xl md:text-6xl font-bold text-white">A Revolutionary Ad Experience</h2>
-                    <p className="mt-4 max-w-2xl mx-auto text-lg text-white/70">
+                    <h2 className="text-4xl md:text-6xl font-bold">A Revolutionary Ad Experience</h2>
+                    <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
                         We put you in the driver's seat. No more passive consumption.
                     </p>
                 </div>
@@ -116,7 +101,7 @@ export default function LandingPage() {
         </AnimatedSection>
         
         {/* How It Works Section */}
-        <AnimatedSection className="py-24 md:py-32 bg-background">
+        <AnimatedSection className="py-24 md:py-32 bg-secondary/30">
             <div className="container px-4">
                 <div className="grid md:grid-cols-2 gap-16 items-center">
                     <div>
@@ -135,7 +120,7 @@ export default function LandingPage() {
                                 <div>
                                     <h3 className="font-semibold text-lg">Convert to Earn</h3>
                                     <p className="text-muted-foreground">With one click, turn an interesting ad into an affiliate product in your personal collection.</p>
-                                </div>
+                                 </div>
                             </li>
                              <li className="flex items-start gap-4">
                                 <CheckCircle className="h-6 w-6 text-primary mt-1 flex-shrink-0" />
@@ -160,16 +145,8 @@ export default function LandingPage() {
         </AnimatedSection>
 
          {/* Trust & Transparency Section */}
-        <AnimatedSection className="relative py-24 md:py-32">
-             <Image
-                src="https://picsum.photos/1920/1080?blur=2"
-                alt="Blurry background"
-                fill
-                data-ai-hint="abstract technology"
-                className="object-cover"
-            />
-            <div className="absolute inset-0 bg-blue-950/80" />
-            <div className="relative container px-4">
+        <AnimatedSection className="py-24 md:py-32">
+            <div className="container px-4">
                 <div className="grid md:grid-cols-2 gap-16 items-center">
                     <div className="relative aspect-[4/3]">
                         <Image
@@ -180,21 +157,22 @@ export default function LandingPage() {
                             className="object-cover rounded-xl shadow-2xl"
                         />
                     </div>
-                    <div className="text-white">
-                        <div className="flex items-center gap-3">
-                            <ShieldCheck className="h-8 w-8 " />
-                            <h2 className="text-4xl md:text-5xl font-bold">Your Data, Your Rules</h2>
+                    <div className="text-left">
+                        <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-primary/10 text-primary font-medium">
+                            <ShieldCheck className="h-5 w-5 " />
+                            <span>Privacy First</span>
                         </div>
-                        <p className="mt-4 text-lg text-white/80">
+                        <h2 className="text-4xl md:text-5xl font-bold mt-4">Your Data, Your Rules</h2>
+                        <p className="mt-4 text-lg text-muted-foreground">
                             We believe in privacy-first. Your ad history is yours alone, stored securely. We provide the tools; you control the data and the earnings.
                         </p>
                         <div className="mt-8 space-y-4">
                             <div className="flex items-center gap-3">
-                                <BarChart className="h-5 w-5 text-white/80" />
+                                <BarChart className="h-5 w-5 text-muted-foreground" />
                                 <span className="font-medium text-lg">Transparent Revenue Sharing</span>
                             </div>
                             <div className="flex items-center gap-3">
-                                <ShieldCheck className="h-5 w-5 text-white/80" />
+                                <ShieldCheck className="h-5 w-5 text-muted-foreground" />
                                 <span className="font-medium text-lg">Secure Anonymous Accounts</span>
                             </div>
                         </div>
@@ -205,13 +183,21 @@ export default function LandingPage() {
       </main>
 
       <footer className="bg-gray-900 text-white">
-        <div className="container mx-auto py-8 px-4 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-sm text-white/60">&copy; {new Date().getFullYear()} Zenvue. All rights reserved.</p>
-          <div className="flex items-center gap-6 text-sm">
-            <Link href="#" className="text-white/60 hover:text-white">Privacy Policy</Link>
-            <Link href="#" className="text-white/60 hover:text-white">Terms of Service</Link>
-            <Link href="#" className="text-white/60 hover:text-white">Contact</Link>
-          </div>
+        <div className="container mx-auto py-12 px-4">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-8">
+                <div className="flex items-center gap-2">
+                    <Logo className="size-8 text-white" />
+                    <span className="text-2xl font-bold">Zenvue</span>
+                </div>
+                <div className="flex items-center gap-6 text-sm">
+                    <Link href="#" className="text-white/60 hover:text-white transition-colors">Privacy Policy</Link>
+                    <Link href="#" className="text-white/60 hover:text-white transition-colors">Terms of Service</Link>
+                    <Link href="#" className="text-white/60 hover:text-white transition-colors">Contact</Link>
+                </div>
+            </div>
+            <div className="mt-8 pt-8 border-t border-white/10 text-center text-sm text-white/50">
+                <p>&copy; {new Date().getFullYear()} Zenvue. All rights reserved.</p>
+            </div>
         </div>
       </footer>
     </div>
