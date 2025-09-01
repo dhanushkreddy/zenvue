@@ -1,13 +1,5 @@
 # Zenvue - Your Feed, Your Rules
 
-## Investor Overview: The Future of Personalized Advertising
-
-**The Problem:** The $600 billion digital advertising market is fundamentally broken for the end-user. Consumers are inundated with interruptive, irrelevant ads, leading to banner blindness and a negative brand experience. When a compelling ad does break through, the user has no effective way to save, track, or act on it later, resulting in lost sales for brands and frustration for consumers.
-
-**Our Solution:** Zenvue is a revolutionary platform that transforms users from passive recipients into active participants in their advertising experience. We provide a seamless interface for users to save and catalog the ads they genuinely find interesting, creating a personalized, high-intent shopping feed.
-
-**The Unfair Advantage & Business Model:** Our core innovation is the one-click "Convert to Affiliate" feature. Zenvue empowers any user to instantly turn a saved ad into a monetizable affiliate link. This creates a powerful, decentralized marketing force, allowing users to earn real commissions from products they endorse. Zenvue's revenue model is built on a simple, scalable commission split, aligning our success directly with the value we create for our users and brand partners. We are building the ultimate high-intent user base, creating a data asset that will be invaluable for future analytics and ad-targeting partnerships.
-
 **Our Vision:** Zenvue is pioneering a new advertising paradigm centered on user choice and empowerment. We are building the essential bridge between discovery and purchase, creating a win-win ecosystem where consumers control their feed, brands connect with engaged audiences, and value is shared equitably.
 
 ---
