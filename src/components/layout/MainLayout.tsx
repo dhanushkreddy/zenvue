@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from 'next/link';
@@ -38,7 +39,7 @@ import {
 import { Input } from '../ui/input';
 
 const navItems = [
-  { href: '/', label: 'Dashboard', icon: LayoutDashboard },
+  { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/ad-history', label: 'Ad History', icon: History },
   { href: '/affiliate-products', label: 'Affiliate Products', icon: Handshake },
   { href: '/cart', label: 'Personal Cart', icon: ShoppingCart },
