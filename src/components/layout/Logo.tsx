@@ -16,8 +16,8 @@ export function Logo({ className }: { className?: string }) {
             y2="100"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stopColor="hsl(var(--primary))" />
-            <stop offset="1" stopColor="hsl(var(--primary) / 0.5)" />
+            <stop stopColor="currentColor" />
+            <stop offset="1" stopColor="currentColor" stopOpacity="0.5" />
           </linearGradient>
         </defs>
         <path
