@@ -132,12 +132,13 @@ export default function LandingPage() {
                         </ul>
                     </div>
                     <div className="relative aspect-square">
-                         <Image
-                            src="https://picsum.photos/600/600"
-                            alt="Ad history view"
-                           fill
-                            data-ai-hint="user interface"
-                            className="object-cover rounded-xl shadow-2xl"
+                         <video
+                            src="https://www.w3schools.com/html/mov_bbb.mp4"
+                            autoPlay
+                            loop
+                            muted
+                            playsInline
+                            className="object-cover w-full h-full rounded-xl shadow-2xl"
                         />
                     </div>
                 </div>
