@@ -138,6 +138,7 @@ const LandingPage = () => {
                     <Link href="/dashboard">
                       <Button size="lg" className="h-12 text-base bg-white text-black hover:bg-gray-200">Get Early Access</Button>
                     </Link>
+                     <p className="text-xs text-muted-foreground mt-2">No spam, just exclusive updates.</p>
                   </div>
                 </AnimatedSection>
             </div>
@@ -177,6 +178,32 @@ const LandingPage = () => {
       </main>
 
       <main className="relative z-10 bg-background">
+        {/* Social Proof Section */}
+        <AnimatedSection className="py-24 md:py-32 border-y">
+            <div className="container px-4">
+                 <div className="text-center mb-16 max-w-3xl mx-auto">
+                    <h2 className="text-4xl md:text-6xl font-bold">Join 5,000+ Early Adopters</h2>
+                    <p className="mt-4 text-lg text-muted-foreground">
+                        Be part of the community shaping the future of online advertising.
+                    </p>
+                </div>
+                <div className="grid md:grid-cols-3 gap-8 text-left">
+                    <div className="p-8 rounded-xl bg-card border">
+                        <p className="text-muted-foreground">"Zenvue is a game-changer. I finally feel in control of my ad experience and I'm earning from it!"</p>
+                        <p className="font-bold mt-4">- Sarah J.</p>
+                    </div>
+                     <div className="p-8 rounded-xl bg-card border">
+                        <p className="text-muted-foreground">"The ability to look back at my ad history is something I didn't know I needed. It's brilliant."</p>
+                        <p className="font-bold mt-4">- Mike R.</p>
+                    </div>
+                     <div className="p-8 rounded-xl bg-card border">
+                        <p className="text-muted-foreground">"Converting ads to affiliate links is seamless. It's the perfect side-hustle for anyone who shops online."</p>
+                        <p className="font-bold mt-4">- Emily T.</p>
+                    </div>
+                </div>
+            </div>
+        </AnimatedSection>
+        
         {/* See It In Action Section */}
         <AnimatedSection className="py-24 md:py-32">
           <div className="container px-4">
@@ -194,14 +221,14 @@ const LandingPage = () => {
                 <p className="mt-4 text-muted-foreground">Every ad you encounter is automatically saved to your private history. Search, filter, and rediscover products you were interested in at any time.</p>
               </div>
               <div className="rounded-xl overflow-hidden border border-border shadow-2xl">
-                <Image src="https://picsum.photos/800/600" alt="Ad History UI" width={800} height={600} data-ai-hint="ad history" className="w-full h-full object-cover" />
+                <Image src="https://picsum.photos/800/600" alt="Ad History UI" width={800} height={600} data-ai-hint="ad history interface" className="w-full h-full object-cover" />
               </div>
             </div>
 
             {/* Step 2: Convert to Affiliate */}
             <div className="grid md:grid-cols-2 gap-16 items-center mb-24">
                <div className="rounded-xl overflow-hidden border border-border shadow-2xl md:order-last">
-                <Image src="https://picsum.photos/800/600" alt="Affiliate Conversion UI" width={800} height={600} data-ai-hint="affiliate conversion" className="w-full h-full object-cover" />
+                <Image src="https://picsum.photos/800/600" alt="Affiliate Conversion UI" width={800} height={600} data-ai-hint="product conversion button" className="w-full h-full object-cover" />
               </div>
               <div className="text-left">
                 <h3 className="text-3xl font-bold">2. Convert and Earn</h3>
@@ -216,7 +243,7 @@ const LandingPage = () => {
                 <p className="mt-4 text-muted-foreground">Like or dislike ads to tailor your experience. Your feedback helps us show you more of what you love and less of what you don't.</p>
               </div>
               <div className="rounded-xl overflow-hidden border border-border shadow-2xl">
-                <Image src="https://picsum.photos/800/600" alt="Ad Rating UI" width={800} height={600} data-ai-hint="ad rating" className="w-full h-full object-cover" />
+                <Image src="https://picsum.photos/800/600" alt="Ad Rating UI" width={800} height={600} data-ai-hint="like dislike buttons" className="w-full h-full object-cover" />
               </div>
             </div>
           </div>
@@ -246,3 +273,5 @@ const LandingPage = () => {
 }
 
 export default LandingPage;
+
+    
