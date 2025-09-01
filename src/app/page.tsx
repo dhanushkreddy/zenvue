@@ -8,12 +8,14 @@ import { ArrowRight, CheckCircle, Handshake, History } from 'lucide-react';
 import { useScrollAnimation } from '@/hooks/use-scroll-animation';
 import { Logo } from '@/components/layout/Logo';
 import { cn } from '@/lib/utils';
+import { useEffect, useRef, useState } from 'react';
 
-const AnimatedSection = ({ children, className }: { children: React.ReactNode, className?: string }) => {
+const AnimatedSection = ({ children, className, id }: { children: React.ReactNode, className?: string, id?: string }) => {
   const { ref, inView } = useScrollAnimation();
   return (
     <section
       ref={ref}
+      id={id}
       className={cn(
         "transition-all duration-1000 ease-out",
         inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10",
@@ -36,6 +38,36 @@ const FeatureCard = ({ icon: Icon, title, description }: { icon: React.ElementTy
 );
 
 const LandingPage = () => {
+  const [activeSection, setActiveSection] = useState('hero');
+  const section1Ref = useRef<HTMLDivElement>(null);
+  const section2Ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.5,
+    };
+
+    const observerCallback = (entries: IntersectionObserverEntry[]) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          setActiveSection(entry.target.id);
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+
+    if (section1Ref.current) observer.observe(section1Ref.current);
+    if (section2Ref.current) observer.observe(section2Ref.current);
+
+    return () => {
+      if (section1Ref.current) observer.unobserve(section1Ref.current);
+      if (section2Ref.current) observer.unobserve(section2Ref.current);
+    };
+  }, []);
+
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
       <header className="fixed top-0 z-50 w-full bg-transparent backdrop-blur-md">
@@ -56,7 +88,7 @@ const LandingPage = () => {
       </header>
 
       <main className="flex-1">
-        {/* Fixed Background Video */}
+        {/* Fixed Background Videos */}
         <div className="fixed inset-0 z-0">
           <video
             src="https://www.w3schools.com/html/mov_bbb.mp4"
@@ -64,7 +96,21 @@ const LandingPage = () => {
             loop
             muted
             playsInline
-            className="object-cover w-full h-full opacity-20"
+            className={cn(
+              "object-cover w-full h-full transition-opacity duration-1000",
+              activeSection === 'hero' ? 'opacity-20' : 'opacity-0'
+            )}
+          />
+           <video
+            src="https://www.w3schools.com/videos/video.mp4"
+            autoPlay
+            loop
+            muted
+            playsInline
+            className={cn(
+              "object-cover w-full h-full absolute inset-0 transition-opacity duration-1000",
+              activeSection === 'value-props' ? 'opacity-20' : 'opacity-0'
+            )}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent"></div>
         </div>
@@ -72,7 +118,7 @@ const LandingPage = () => {
         {/* Scrollable Content */}
         <div className="relative z-10">
           {/* Hero Section */}
-          <section className="flex h-screen min-h-[700px] items-center justify-center pt-20">
+          <section ref={section1Ref} id="hero" className="flex h-screen min-h-[700px] items-center justify-center pt-20">
             <div className="container text-center px-4">
                 <AnimatedSection>
                   <h1 className="text-5xl md:text-8xl font-black tracking-tighter">
@@ -98,33 +144,35 @@ const LandingPage = () => {
           </section>
 
           {/* Core Value Propositions Section */}
-          <AnimatedSection className="py-24 md:py-32">
-              <div className="container px-4">
-                  <div className="text-center mb-16 max-w-3xl mx-auto">
-                      <h2 className="text-4xl md:text-6xl font-bold">A Revolutionary Ad Experience</h2>
-                      <p className="mt-4 text-lg text-muted-foreground">
-                          We put you in the driver's seat. No more passive consumption.
-                      </p>
-                  </div>
-                  <div className="grid md:grid-cols-3 gap-8">
-                    <FeatureCard 
-                        icon={History}
-                        title="Full Transparency"
-                        description="Access a complete, searchable history of every ad you've seen. Never lose track of a product you were interested in."
-                    />
-                    <FeatureCard 
-                        icon={Handshake}
-                        title="Earn Your Share"
-                        description="Convert any ad into an affiliate product with a single click and earn a commission when you or others purchase through your link."
-                    />
-                    <FeatureCard 
-                        icon={CheckCircle}
-                        title="Total Control"
-                        description="Rate ads to tailor your future experience. Manage your converted products and track your potential earnings in a personalized dashboard."
-                    />
-                  </div>
-              </div>
-          </AnimatedSection>
+          <div ref={section2Ref} id="value-props">
+            <AnimatedSection className="py-24 md:py-32">
+                <div className="container px-4">
+                    <div className="text-center mb-16 max-w-3xl mx-auto">
+                        <h2 className="text-4xl md:text-6xl font-bold">A Revolutionary Ad Experience</h2>
+                        <p className="mt-4 text-lg text-muted-foreground">
+                            We put you in the driver's seat. No more passive consumption.
+                        </p>
+                    </div>
+                    <div className="grid md:grid-cols-3 gap-8">
+                      <FeatureCard 
+                          icon={History}
+                          title="Full Transparency"
+                          description="Access a complete, searchable history of every ad you've seen. Never lose track of a product you were interested in."
+                      />
+                      <FeatureCard 
+                          icon={Handshake}
+                          title="Earn Your Share"
+                          description="Convert any ad into an affiliate product with a single click and earn a commission when you or others purchase through your link."
+                      />
+                      <FeatureCard 
+                          icon={CheckCircle}
+                          title="Total Control"
+                          description="Rate ads to tailor your future experience. Manage your converted products and track your potential earnings in a personalized dashboard."
+                      />
+                    </div>
+                </div>
+            </AnimatedSection>
+          </div>
         </div>
       </main>
 
