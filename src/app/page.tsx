@@ -125,33 +125,35 @@ const LandingPage = () => {
                   </div>
               </div>
           </AnimatedSection>
-
-           {/* Video cards section */}
-          <AnimatedSection className="py-24 md:py-32">
-            <div className="container px-4">
-              <div className="text-center mb-16 max-w-3xl mx-auto">
-                <h2 className="text-4xl md:text-6xl font-bold">See It In Action</h2>
-                <p className="mt-4 text-lg text-muted-foreground">
-                  From your feed to your wallet.
-                </p>
-              </div>
-              <div className="grid md:grid-cols-3 gap-8">
-                <div className="rounded-xl overflow-hidden border border-white/10 shadow-2xl transition-all duration-300 hover:shadow-primary/20 hover:-translate-y-2">
-                  <video src="https://www.w3schools.com/html/mov_bbb.mp4" autoPlay loop muted playsInline className="w-full h-full object-cover" />
-                </div>
-                <div className="rounded-xl overflow-hidden border border-white/10 shadow-2xl transition-all duration-300 hover:shadow-primary/20 hover:-translate-y-2">
-                  <video src="https://www.w3schools.com/html/mov_bbb.mp4" autoPlay loop muted playsInline className="w-full h-full object-cover" />
-                </div>
-                <div className="rounded-xl overflow-hidden border border-white/10 shadow-2xl transition-all duration-300 hover:shadow-primary/20 hover:-translate-y-2">
-                  <video src="https://www.w3schools.com/html/mov_bbb.mp4" autoPlay loop muted playsInline className="w-full h-full object-cover" />
-                </div>
-              </div>
-            </div>
-          </AnimatedSection>
         </div>
       </main>
 
-      <footer className="relative z-10 bg-background/50 border-t border-white/10">
+      <main className="relative z-10 bg-background">
+        {/* Video cards section */}
+        <AnimatedSection className="py-24 md:py-32">
+          <div className="container px-4">
+            <div className="text-center mb-16 max-w-3xl mx-auto">
+              <h2 className="text-4xl md:text-6xl font-bold">See It In Action</h2>
+              <p className="mt-4 text-lg text-muted-foreground">
+                From your feed to your wallet.
+              </p>
+            </div>
+            <div className="grid md:grid-cols-3 gap-8">
+              <div className="rounded-xl overflow-hidden border border-border shadow-2xl transition-all duration-300 hover:shadow-primary/20 hover:-translate-y-2">
+                <video src="https://www.w3schools.com/html/mov_bbb.mp4" autoPlay loop muted playsInline className="w-full h-full object-cover" />
+              </div>
+              <div className="rounded-xl overflow-hidden border border-border shadow-2xl transition-all duration-300 hover:shadow-primary/20 hover:-translate-y-2">
+                <video src="https://www.w3schools.com/html/mov_bbb.mp4" autoPlay loop muted playsInline className="w-full h-full object-cover" />
+              </div>
+              <div className="rounded-xl overflow-hidden border border-border shadow-2xl transition-all duration-300 hover:shadow-primary/20 hover:-translate-y-2">
+                <video src="https://www.w3schools.com/html/mov_bbb.mp4" autoPlay loop muted playsInline className="w-full h-full object-cover" />
+              </div>
+            </div>
+          </div>
+        </AnimatedSection>
+      </main>
+
+      <footer className="relative z-10 bg-background/95 border-t border-border">
         <div className="container mx-auto py-12 px-4">
             <div className="flex flex-col md:flex-row items-center justify-between gap-8">
                 <div className="flex items-center gap-2">
@@ -164,7 +166,7 @@ const LandingPage = () => {
                     <Link href="#" className="text-muted-foreground hover:text-foreground transition-colors">Contact</Link>
                 </div>
             </div>
-            <div className="mt-8 pt-8 border-t border-white/10 text-center text-sm text-muted-foreground">
+            <div className="mt-8 pt-8 border-t border-border text-center text-sm text-muted-foreground">
                 <p>&copy; {new Date().getFullYear()} Zenvue. All rights reserved.</p>
             </div>
         </div>
