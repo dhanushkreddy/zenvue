@@ -83,7 +83,7 @@ const Counter = ({ to }: { to: number }) => {
 const LandingPage = () => {
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
-      <header className="fixed top-0 z-50 w-full bg-background/30 backdrop-blur-lg border-b border-white/10">
+      <header className="fixed top-0 z-50 w-full bg-background/80 border-b border-white/10">
         <div className="container mx-auto flex h-20 items-center justify-between px-4">
           <Link href="/" className="flex items-center gap-2">
             <Logo className="size-8" />
@@ -93,20 +93,10 @@ const LandingPage = () => {
       </header>
 
       <main className="flex-1">
-        {/* Fixed Background Video */}
-        <div className="fixed inset-0 z-0">
-           <video
-            src="https://videos.coverr.co/video/coverr-a-person-in-a-dark-room-uses-a-laptop-and-a-smartphone-3023/1080p.mp4"
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="object-cover w-full h-full absolute inset-0 opacity-20"
-          />
+        <div className="fixed inset-0 z-0 opacity-20">
           <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent"></div>
         </div>
 
-        {/* Scrollable Content */}
         <div className="relative z-10">
           {/* Hero Section */}
           <section className="flex h-screen min-h-[700px] items-center justify-center pt-20">
@@ -134,7 +124,7 @@ const LandingPage = () => {
                       <Input
                         type="email"
                         placeholder="Enter your email"
-                        className="h-12 text-base flex-1 rounded-full bg-white/10 border border-black/50 placeholder:text-white/70 focus-visible:ring-primary focus-visible:ring-offset-0 focus-visible:outline-none focus-visible:border-primary"
+                        className="h-12 text-base flex-1 rounded-full bg-white/10 border-black/50 placeholder:text-white/70 focus-visible:ring-primary focus-visible:ring-offset-0 focus-visible:outline-none focus-visible:border-black"
                         aria-label="Email for early access"
                       />
                       <Button size="lg" type="submit" className="h-12 text-base rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold shadow-[0_0_20px_theme(colors.primary/0.4)] animate-pulse hover:animate-none">
