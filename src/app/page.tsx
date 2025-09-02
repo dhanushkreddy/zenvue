@@ -177,7 +177,7 @@ const LandingPage = () => {
             {/* Social Proof Section */}
             <section className="py-24 md:py-32 border-y">
                 <div className="container px-4">
-                     <h2 className="text-4xl md:text-6xl font-bold whitespace-nowrap text-center mb-16">Join <Counter to={userCount} /> Early Adopters</h2>
+                     <h2 className="text-4xl md:text-6xl font-bold text-center mb-16">Join <Counter to={userCount} /> Early Adopters</h2>
                     <div className="grid md:grid-cols-3 gap-8 text-left">
                         <div className="p-8 rounded-xl bg-card border">
                             <p className="text-muted-foreground">"Zenvue is a game-changer. I finally feel in control of my ad experience and I'm earning from it!"</p>
