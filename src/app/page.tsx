@@ -178,22 +178,9 @@ const LandingPage = () => {
           <main className="relative z-10 bg-background">
             {/* Social Proof Section */}
             <section className="py-24 md:py-32 border-y">
-                <div className="container px-4">
-                     <h2 className="text-4xl md:text-6xl font-bold text-center mb-16">Join <Counter to={userCount} /> Early Adopters</h2>
-                    <div className="grid md:grid-cols-3 gap-8 text-left">
-                        <div className="p-8 rounded-xl bg-card border">
-                            <p className="text-muted-foreground">"Zenvue is a game-changer. I finally feel in control of my ad experience and I'm earning from it!"</p>
-                            <p className="font-bold mt-4">- Sarah J.</p>
-                        </div>
-                         <div className="p-8 rounded-xl bg-card border">
-                            <p className="text-muted-foreground">"The ability to look back at my ad history is something I didn't know I needed. It's brilliant."</p>
-                            <p className="font-bold mt-4">- Mike R.</p>
-                        </div>
-                         <div className="p-8 rounded-xl bg-card border">
-                            <p className="text-muted-foreground">"Converting ads to affiliate links is seamless. It's the perfect side-hustle for anyone who shops online."</p>
-                            <p className="font-bold mt-4">- Emily T.</p>
-                        </div>
-                    </div>
+                <div className="container px-4 text-center">
+                     <h2 className="text-4xl md:text-6xl font-bold">Join <Counter to={userCount} /> Early Adopters</h2>
+                     <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">Be among the first to experience a revolutionary way to interact with ads. The Zenvue community is growing every day.</p>
                 </div>
             </section>
             
@@ -254,5 +241,3 @@ const LandingPage = () => {
 };
 
 export default LandingPage;
-
-    
