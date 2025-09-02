@@ -202,7 +202,7 @@ const LandingPage = () => {
                       <FeatureCard 
                           icon={Handshake}
                           title="Earn Your Share"
-                          description="Convert any ad into a personal affiliate link with a single click. Earn a commission when you or others purchase—you're the new storefront."
+                          description="Convert any ad into a personal affiliate link with a single click. Earn a commission when you or others purchase, you're the new storefront."
                       />
                       <FeatureCard 
                           icon={CheckCircle}
