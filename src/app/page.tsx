@@ -6,8 +6,8 @@ import { Button } from '@/components/ui/button';
 import { CheckCircle, Handshake, History } from 'lucide-react';
 import { Logo } from '@/components/layout/Logo';
 import { cn } from '@/lib/utils';
-import { useEffect, useState, useRef, useActionState } from 'react';
-import { useFormStatus } from 'react-dom';
+import { useEffect, useState, useRef } from 'react';
+import { useFormState, useFormStatus } from 'react-dom';
 import { Input } from '@/components/ui/input';
 import { getEarlyAccessUserCount, addEarlyAccessUser } from './actions';
 
@@ -83,7 +83,7 @@ const Counter = ({ to }: { to: number }) => {
 }
 
 const EarlyAccessForm = () => {
-  const [state, formAction] = useActionState(addEarlyAccessUser, { message: '', success: false });
+  const [state, formAction] = useFormState(addEarlyAccessUser, { message: '', success: false });
   const { pending } = useFormStatus();
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -237,9 +237,8 @@ const LandingPage = () => {
                     <span className="text-2xl font-bold">Zenvue</span>
                 </div>
                 <div className="flex items-center gap-6 text-sm">
-                    <Link href="#" className="text-muted-foreground hover:text-foreground transition-colors">Privacy</Link>
-                    <Link href="#" className="text-muted-foreground hover:text-foreground transition-colors">Terms</Link>
-                    <Link href="#" className="text-muted-foreground hover:text-foreground transition-colors">Contact</Link>
+                    <Link href="/privacy" className="text-muted-foreground hover:text-foreground transition-colors">Privacy</Link>
+                    <Link href="/terms" className="text-muted-foreground hover:text-foreground transition-colors">Terms</Link>
                 </div>
             </div>
             <div className="mt-8 pt-8 border-t border-border text-center text-sm text-muted-foreground">
