@@ -22,7 +22,7 @@ const Sticker = ({ children, className }: { children: React.ReactNode, className
 )
 
 const FeatureCard = ({ icon: Icon, title, description, sticker, stickerClassName, doodle }: { icon: React.ElementType, title: string, description: string, sticker?: React.ReactNode, stickerClassName?: string, doodle?: React.ReactNode }) => (
-    <div className="relative text-left p-8 rounded-2xl h-full flex flex-col transition-all duration-300 bg-card/5 dark:bg-card/50 backdrop-blur-sm border border-black/10 dark:border-white/10 hover:bg-card/10 dark:hover:bg-card/70 hover:border-black/20 dark:hover:border-white/20 hover:shadow-[0_0_20px_theme(colors.primary/0.2)] dark:hover:shadow-[0_0_20px_theme(colors.primary/0.3)]">
+    <div className="relative text-left p-8 rounded-2xl h-full flex flex-col transition-all duration-300 bg-card/5 dark:bg-card/50 backdrop-blur-sm border border-black/10 dark:border-white/10 hover:bg-card/10 dark:hover:bg-card/70 hover:border-black/20 dark:hover:border-white/20 hover:shadow-[0_0_20px_theme(colors.primary/0.2)] dark:hover:shadow-[0_0_20px_theme(colors.primary/0.3)] hover:scale-105">
         {sticker && <Sticker className={stickerClassName}>{sticker}</Sticker>}
         {doodle}
         <div className="bg-primary/10 p-3 rounded-full w-fit">
@@ -128,7 +128,7 @@ const LandingPage = () => {
   }, []);
 
   return (
-    <div className="flex flex-col min-h-screen bg-background text-foreground">
+    <div className="flex flex-col min-h-screen bg-background text-foreground overflow-x-hidden">
       <header className="fixed top-0 z-50 w-full bg-background/80 border-b backdrop-blur-sm">
         <div className="container mx-auto flex h-20 items-center justify-between px-4">
           <Link href="/" className="flex items-center gap-2">
@@ -140,7 +140,9 @@ const LandingPage = () => {
 
       <main className="flex-1">
         <div className="fixed inset-0 z-0 opacity-30 dark:opacity-20">
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent"></div>
+            <div className="absolute w-[800px] h-[800px] -left-[200px] -top-[200px] bg-gradient-to-br from-fuchsia-500/50 to-pink-500/50 rounded-full blur-[150px] animate-blob-1"></div>
+            <div className="absolute w-[600px] h-[600px] right-0 bottom-0 bg-gradient-to-br from-primary/50 to-fuchsia-500/50 rounded-full blur-[150px] animate-blob-2 animation-delay-2000"></div>
+            <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent"></div>
         </div>
 
         <div className="relative z-10">
@@ -252,3 +254,5 @@ const LandingPage = () => {
 };
 
 export default LandingPage;
+
+    

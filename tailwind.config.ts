@@ -97,12 +97,28 @@ export default {
             height: '0',
           },
         },
+        'blob-1': {
+            '0%, 100%': { transform: 'translate(0, 0) scale(1)' },
+            '25%': { transform: 'translate(20px, -30px) scale(1.1)' },
+            '50%': { transform: 'translate(0, 40px) scale(1)' },
+            '75%': { transform: 'translate(-30px, -20px) scale(0.9)' },
+        },
+        'blob-2': {
+            '0%, 100%': { transform: 'translate(0, 0) scale(1)' },
+            '25%': { transform: 'translate(-15px, 25px) scale(0.9)' },
+            '50%': { transform: 'translate(20px, -15px) scale(1.1)' },
+            '75%': { transform: 'translate(5px, 5px) scale(1)' },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
+        'blob-1': 'blob-1 8s infinite ease-in-out',
+        'blob-2': 'blob-2 10s infinite ease-in-out',
       },
     },
   },
   plugins: [require('tailwindcss-animate')],
 } satisfies Config;
+
+    
