@@ -160,7 +160,7 @@ const LandingPage = () => {
                 
                 
                   <p className="mt-6 max-w-2xl mx-auto text-lg text-muted-foreground">
-                    Stop scrolling past good ads. Zenvue lets you save, track, and even earn from the ads you see.
+                    Stop scrolling past good ads. Zenvue lets you save, track, and even earn from the ads you choose to see.
                   </p>
                   <div className="mt-8 max-w-lg mx-auto relative">
                      <svg className="absolute -top-14 -right-16 w-24 h-24 text-primary opacity-50 -rotate-[30deg]" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -168,7 +168,7 @@ const LandingPage = () => {
                     </svg>
 
                     <EarlyAccessForm />
-                    <p className="text-xs text-muted-foreground mt-2">No spam. Only exclusive updates.</p>
+                    <p className="text-xs text-muted-foreground mt-2">Be first. Be heard. No spam.</p>
                   </div>
                 
             </div>
@@ -179,7 +179,7 @@ const LandingPage = () => {
             <section className="py-24 md:py-32 border-y">
                 <div className="container px-4 text-center">
                      <h2 className="text-4xl md:text-6xl font-bold">Join <Counter to={userCount} /> Early Adopters</h2>
-                     <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">Be among the first to experience a revolutionary way to interact with ads. The Zenvue community is growing every day.</p>
+                     <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">Be part of the founding community that's redefining the relationship between consumers and brands.</p>
                 </div>
             </section>
             
@@ -189,7 +189,7 @@ const LandingPage = () => {
                     <div className="text-center mb-16 max-w-3xl mx-auto">
                         <h2 className="text-4xl md:text-6xl font-bold">A Revolutionary Ad Experience</h2>
                         <p className="mt-4 text-lg text-muted-foreground">
-                            We put you in the driver's seat. No more passive consumption.
+                            We're building an ecosystem of shared value, not a walled garden. You are in the driver's seat.
                         </p>
                     </div>
                     <div className="grid md:grid-cols-3 gap-8">
@@ -202,12 +202,12 @@ const LandingPage = () => {
                       <FeatureCard 
                           icon={Handshake}
                           title="Earn Your Share"
-                          description="Convert any ad into an affiliate product with a single click and earn a commission when you or others purchase through your link."
+                          description="Convert any ad into a personal affiliate link with a single click. Earn a commission when you or others purchase—you're the new storefront."
                       />
                       <FeatureCard 
                           icon={CheckCircle}
                           title="Total Control"
-                          description="Rate ads to tailor your future experience. Manage your converted products and track your potential earnings in a personalized dashboard."
+                          description="Rate ads to tailor your future experience. Manage your converted products and track potential earnings in a personalized dashboard."
                       />
                     </div>
                 </div>
